@@ -1,0 +1,4 @@
+{
+  "git": { "deploymentEnabled": { "data": false } },
+  "ignoreCommand": "git diff --quiet HEAD^ HEAD -- . ':(exclude)data'"
+}
