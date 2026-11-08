@@ -8,3 +8,4 @@
 ## متغيرات البيئة على Vercel
 - `GITHUB_TOKEN`: توكن GitHub بصلاحية Contents: Read and write على هذا المستودع
 - `APP_PASSWORD`: كلمة مرور الدخول
+
