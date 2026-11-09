@@ -296,6 +296,11 @@ button{cursor:pointer}
 .ract .linkbtn{max-width:170px}
 .cardtin{width:100%;font-size:16.5px;margin:0 -8px;padding:6px 8px}.cardtin::placeholder{color:var(--ink3);opacity:1;font-weight:600}.orig{display:block;color:var(--ink3);font-size:12px;margin-top:2px}
 @media(max-width:560px){.calhead h2{font-size:20px}.calhead{flex-wrap:wrap;gap:8px}}
+.ccity{display:flex;flex-wrap:wrap;gap:3px}
+.ccity span{font-size:11.5px;font-weight:900;color:#fff;background:var(--c);border-radius:8px;padding:2px 8px;line-height:1.5}
+.clegend{display:flex;gap:14px;margin:-4px 0 10px;font-size:13px;font-weight:700;color:var(--ink2)}
+.clegend span{display:flex;align-items:center;gap:6px}.clegend i{width:12px;height:12px;border-radius:4px;background:var(--c)}
+@media(max-width:900px){.cnt{display:none}.ccity span{font-size:9.5px;padding:1px 4px;border-radius:5px}.cd.has:after{display:none}}
 canvas#fx{position:fixed;inset:0;pointer-events:none;z-index:95}
 
 @media(max-width:1180px){.stats{grid-template-columns:repeat(3,1fr)}}@media(max-width:980px){.hero{grid-template-columns:1fr}.stats{grid-template-columns:repeat(2,1fr)}}
@@ -601,6 +606,7 @@ function renderTodo(l){
 
 /* ---------- calendar ---------- */
 let CALON=false,CM=null,CSEL=null;
+const CCOL={'حلب':'#2F80ED','حماة':'#10A88F','حمص':'#EF4F8B'};
 const pad=n=>String(n).padStart(2,'0');
 const ymd=d=>`${d.getFullYear()}-${pad(d.getMonth()+1)}-${pad(d.getDate())}`;
 const MONTHS=['كانون الثاني','شباط','آذار','نيسان','أيار','حزيران','تموز','آب','أيلول','تشرين الأول','تشرين الثاني','كانون الأول'];
@@ -622,9 +628,10 @@ function renderCal(){
   $('#cal').innerHTML=`<div class="calmain">
     <div class="calhead"><div><h2>${MONTHS[CM.getMonth()]} <span class="code">${CM.getFullYear()}</span></h2><small>${mcount?mcount+' موعد هذا الشهر':'لا مواعيد هذا الشهر'}</small></div>
       <div class="calnav"><button data-cm="-1" aria-label="الشهر السابق">›</button><button data-cm="0">اليوم</button><button data-cm="1" aria-label="الشهر التالي">‹</button><button class="calx" onclick="closeCal()">×</button></div></div>
-    <div class="calgrid wd">${WD.map(w=>`<div>${w}</div>`).join('')}</div>
+    <div class="clegend">${CITIES.map(c=>`<span style="--c:${CCOL[c]}"><i></i>${c}</span>`).join('')}</div><div class="calgrid wd">${WD.map(w=>`<div>${w}</div>`).join('')}</div>
     <div class="calgrid">${cells.map(c=>{if(!c)return'<div class="cd empty"></div>';const k=ymd(c),e=ev[k]||[];
-      return `<button class="cd ${e.length?'has':''} ${k===today?'today':''} ${k===CSEL?'sel':''} ${c.getDay()===5?'fri':''}" data-cd="${k}"><b>${c.getDate()}</b>${e.length?`<span class="cnt">${e.length}</span>`:''}<div class="evs">${e.slice(0,3).map(it=>`<span style="--t:var(--${it.type})">${esc(st(it.id).time?st(it.id).time+' ':'')}${esc(title(it))}</span>`).join('')}${e.length>3?`<em>+${e.length-3}</em>`:''}</div></button>`}).join('')}</div>
+      const cs=[...new Set(e.map(cityOf).filter(c=>CITIES.includes(c)))];
+      return `<button class="cd ${e.length?'has':''} ${k===today?'today':''} ${k===CSEL?'sel':''} ${c.getDay()===5?'fri':''}" data-cd="${k}"><b>${c.getDate()}</b>${e.length?`<span class="cnt">${e.length}</span>`:''}${cs.length?`<div class="ccity">${cs.map(x=>`<span style="--c:${CCOL[x]}">${x}</span>`).join('')}</div>`:''}<div class="evs">${e.slice(0,3).map(it=>`<span style="--t:var(--${it.type})">${esc(st(it.id).time?st(it.id).time+' ':'')}${esc(title(it))}</span>`).join('')}${e.length>3?`<em>+${e.length-3}</em>`:''}</div></button>`}).join('')}</div>
   </div>
   <div class="calside">
     <div class="cdayh"><small>${WD[(new Date(CSEL+'T00:00').getDay()+1)%7]}</small><h3>${new Date(CSEL+'T00:00').getDate()} ${MONTHS[new Date(CSEL+'T00:00').getMonth()]}</h3></div>
