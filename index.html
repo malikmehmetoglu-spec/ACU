@@ -13,7 +13,7 @@
   color-scheme:light;
   --paper:#FFF6E9;--paper2:#FFEFD8;--card:#FFFFFF;--ink:#1E2340;--ink2:#545a7a;--ink3:#9096b3;--line:#F1E3CC;
   --sun:#FFB627;--coral:#FF6B4A;--teal:#10A88F;--sky:#2F80ED;--rose:#EF4F8B;--leaf:#5BBF4A;--plum:#8E5BD9;
-  --DS:#FF6B4A;--TR:#2F80ED;--CI:#10A88F;--SP:#FFB627;--DR:#EF4F8B;--FN:#1E2340;--WP:#8E5BD9;
+  --DS:#FF6B4A;--TR:#2F80ED;--CI:#10A88F;--SP:#FFB627;--DR:#EF4F8B;--FN:#1E2340;--WP:#8E5BD9;--PT:#E8590C;--CO:#0B7285;
   --scroll-thumb:#F2CF94;--scroll-thumb-hover:#FFB627;
   --r:22px;--shadow:0 1px 0 rgba(30,35,64,.04),0 10px 30px -14px rgba(30,35,64,.25);
 }
@@ -57,7 +57,7 @@ button{cursor:pointer}
 .ring b small{font-size:14px;margin-inline-start:2px}
 .ringbox h3{margin:0 0 6px;font-size:18px}
 .ringbox p{margin:2px 0;color:var(--ink2);font-size:14px}
-.stats{display:grid;grid-template-columns:repeat(4,1fr);gap:14px}
+.stats{display:grid;grid-template-columns:repeat(5,1fr);gap:12px}
 .stat{padding:18px;border-radius:var(--r);color:#fff;position:relative;overflow:hidden;cursor:pointer;transition:transform .25s cubic-bezier(.2,.9,.3,1.4)}
 .stat:hover{transform:translateY(-4px) rotate(-.6deg)}
 .stat.on{outline:3px solid var(--ink);outline-offset:3px}
@@ -67,7 +67,7 @@ button{cursor:pointer}
 .stat .bar{height:7px;border-radius:9px;background:rgba(255,255,255,.3);margin-top:12px;overflow:hidden}
 .stat .bar i{display:block;height:100%;background:#fff;border-radius:9px;transition:width .8s cubic-bezier(.2,.8,.2,1)}
 .stat:after{content:"";position:absolute;width:120px;height:120px;border-radius:50%;background:rgba(255,255,255,.14);left:-30px;bottom:-60px}
-.s-shoot{background:var(--coral)}.s-reel{background:var(--teal)}.s-promo{background:var(--ink)}.s-phase{background:var(--sky)}
+.s-shoot{background:var(--coral)}.s-reel{background:var(--teal)}.s-promo{background:var(--ink)}.s-phase{background:var(--sky)}.s-path{background:#E8590C}
 
 /* ---------- toolbar ---------- */
 .tools{position:sticky;top:0;z-index:20;padding:12px 0;margin:0 -4px;background:linear-gradient(var(--paper) 75%,transparent)}
@@ -107,7 +107,7 @@ button{cursor:pointer}
 .card .desc{margin:6px 0 0;color:var(--ink2);font-size:13.5px;line-height:1.7;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
 .feeds{display:flex;gap:4px;flex-wrap:wrap;margin-top:8px}
 .feeds span{font-size:11px;direction:ltr;background:var(--paper);color:var(--ink2);border-radius:6px;padding:1px 6px;font-weight:700}
-.stages{display:flex;gap:5px;padding:0 18px}
+.stages{display:flex;flex-wrap:wrap;gap:5px;padding:0 18px}.stage{min-width:calc(25% - 5px)}
 .stage{flex:1;border:0;background:var(--paper2);border-radius:10px;padding:7px 2px;font-size:11.5px;font-weight:800;color:var(--ink3);position:relative;transition:all .25s}
 .stage:hover{background:#ffe5bb;color:var(--ink)}
 .stage.on{background:var(--t);color:#fff;transform:translateY(-1px)}
@@ -201,7 +201,7 @@ button{cursor:pointer}
 .toast.on{transform:translate(-50%,0)}
 canvas#fx{position:fixed;inset:0;pointer-events:none;z-index:95}
 
-@media(max-width:980px){.hero{grid-template-columns:1fr}.stats{grid-template-columns:repeat(2,1fr)}}
+@media(max-width:1180px){.stats{grid-template-columns:repeat(3,1fr)}}@media(max-width:980px){.hero{grid-template-columns:1fr}.stats{grid-template-columns:repeat(2,1fr)}}
 @media(max-width:560px){.wrap{padding:14px 12px 110px}.brand h1{font-size:18px}.grid{grid-template-columns:1fr}.two{grid-template-columns:1fr}.stat .n{font-size:30px}}
 @media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
 </style>
@@ -262,8 +262,8 @@ canvas#fx{position:fixed;inset:0;pointer-events:none;z-index:95}
 <div class="toast" id="toast"></div>
 
 <script>
-const GROUPS={shoot:{n:'طلعات التصوير',s:['تنسيق','تصوير','مقابلات','أرشفة']},reel:{n:'الريلز',s:['سيناريو','مونتاج','مراجعة','تسليم']},promo:{n:'البروموهات',s:['سيناريو','مواد','مونتاج','مراجعة','تسليم']},phase:{n:'مراحل العمل',s:['منجز']}};
-const TYPES={DS:'جلسة حوارية',TR:'تدريب لجان',CI:'مبادرة مجتمعية',SP:'مشروع خدمي',DR:'تصوير جوي',FN:'برومو ختامي',WP:'مهمة عمل'};
+const GROUPS={shoot:{n:'طلعات التصوير',s:['تنسيق','تصوير','مقابلات','أرشفة']},reel:{n:'الريلز',s:['سيناريو','مونتاج','مراجعة','تسليم']},promo:{n:'البروموهات',s:['سيناريو','مواد','مونتاج','مراجعة','تسليم']},phase:{n:'مراحل العمل',s:['منجز']},path:{n:'مسار تطوير اللجان',s:[]}};
+const TYPES={DS:'جلسة حوارية',TR:'تدريب لجان',CI:'مبادرة مجتمعية',SP:'مشروع خدمي',DR:'تصوير جوي',FN:'برومو ختامي',WP:'مهمة عمل',PT:'محطة المسار',CO:'توجيه مستمر'};
 const CITIES=['حلب','حماة','حمص'];
 const CODE={'حلب':'ALP','حماة':'HAM','حمص':'HMS'};
 const WHO={'مدير الفريق':'#FF6B4A','المصور':'#10A88F','المونتير':'#2F80ED'};
@@ -275,7 +275,7 @@ const esc=s=>String(s??'').replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&g
 
 /* ---------- state helpers ---------- */
 const st=id=>S.items[id]||{};
-const stages=it=>GROUPS[it.group].s;
+const stages=it=>it.stages||GROUPS[it.group].s;
 const done=it=>{const d=st(it.id).stages||[];return stages(it).filter((_,i)=>d[i]).length};
 const pct=it=>done(it)/stages(it).length;
 const status=it=>{const p=pct(it);return p===1?'done':p>0?'wip':'todo'};
@@ -322,7 +322,7 @@ function renderHero(){
   $('#ringn').innerHTML=Math.round(total*100)+'<small>%</small>';
   const c=counts(ITEMS);$('#ringd').textContent=`${c.done} من ${c.all} مهمة منجزة`;
   const last=S.log[0];$('#ringl').textContent=last?`آخر تحديث: ${last.label}`:'';
-  $('#stats').innerHTML=['shoot','reel','promo','phase'].map(g=>{const l=ITEMS.filter(i=>i.group===g);const p=l.reduce((a,i)=>a+pct(i),0)/l.length;const d=l.filter(i=>status(i)==='done').length;
+  $('#stats').innerHTML=['shoot','reel','promo','path','phase'].map(g=>{const l=ITEMS.filter(i=>i.group===g);const p=l.reduce((a,i)=>a+pct(i),0)/l.length;const d=l.filter(i=>status(i)==='done').length;
     return `<div class="stat s-${g} ${F.group===g?'on':''}" data-g="${g}"><div class="n">${d}<span> / ${l.length}</span></div><div class="l">${GROUPS[g].n}</div><div class="bar"><i style="width:${p*100}%"></i></div></div>`}).join('');
 }
 function renderChips(){
@@ -417,7 +417,7 @@ function renderDrawer(id){
     <div class="meta" style="margin-top:6px"><span class="tag" style="--t:var(--${it.type})">${TYPES[it.type]}</span>${cityOf(it)?`<span class="city">${esc(cityOf(it))}</span>`:''}<span class="city">${Math.round(pct(it)*100)}%</span></div>
     <h2>${esc(title(it))}</h2>${it.spec?`<div style="color:var(--ink2);font-size:14px">${esc(it.spec)}</div>`:''}</div>
   <div class="dbody">
-    <div class="sec"><h4>مراحل العمل</h4><div class="checks">${stages(it).map((n,k)=>`<button class="check ${d[k]?'on':''}" data-stage="${id}|${k}"><span class="bx"></span>${n}</button>`).join('')}</div></div>
+    <div class="sec"><h4>${it.group==='path'?'ما تم تصويره':'مراحل العمل'}</h4>${it.stageHint?`<div style="font-size:12px;color:var(--ink3);margin:-4px 0 8px">${esc(it.stageHint)}</div>`:''}<div class="checks">${stages(it).map((n,k)=>`<button class="check ${d[k]?'on':''}" data-stage="${id}|${k}"><span class="bx"></span>${n}</button>`).join('')}</div></div>
     <div class="sec"><h4>الرابط</h4><div class="openlink"><input id="f_link" class="ltr" style="border:1.5px solid var(--line);border-radius:12px;padding:11px;background:var(--paper);outline:0" placeholder="https://" value="${esc(s.link||'')}">${s.link?`<a class="btn dark" href="${esc(s.link)}" target="_blank" rel="noopener" style="text-decoration:none;display:grid;place-items:center">فتح</a>`:''}</div></div>
     <div class="sec"><h4>التفاصيل</h4>
       ${!it.named||it.group==='reel'&&!it.named?`<div class="field"><label>الاسم المعتمد من ACU</label><input id="f_name" value="${esc(s.name||'')}" placeholder="اكتب اسم المبادرة أو المشروع"></div>`:''}
@@ -429,7 +429,7 @@ function renderDrawer(id){
     ${it.desc?`<div class="sec"><h4>الفكرة</h4><div style="line-height:1.9;font-size:14.5px">${esc(it.desc)}</div>${it.cta?`<div style="margin-top:8px;font-weight:800;color:var(--rose)">نص الختام: ${esc(it.cta)}</div>`:''}</div>`:''}
     ${it.people?`<div class="sec"><h4>الشخصيات</h4><div style="line-height:1.9">${it.people.map(esc).join('، ')}</div></div>`:''}
     ${it.scenes?`<div class="sec"><h4>المشاهد</h4><table class="scn">${it.scenes.map(r=>`<tr>${r.map(c=>`<td>${esc(c)}</td>`).join('')}</tr>`).join('')}</table></div>`:''}
-    ${it.questions?`<div class="sec"><h4>أسئلة المقابلات</h4><ol class="qs">${it.questions.map(q=>`<li>${esc(q)}</li>`).join('')}</ol></div>`:''}
+    ${it.note?`<div class="sec"><h4>ملاحظة</h4><div style="line-height:1.9">${esc(it.note)}</div></div>`:''}${it.extra?`<div class="sec"><h4>لقطات إضافية عند توفرها</h4><ul class="qs">${it.extra.map(x=>`<li>${esc(x)}</li>`).join('')}</ul></div>`:''}${it.questions?`<div class="sec"><h4>أسئلة المقابلات</h4><ol class="qs">${it.questions.map(q=>`<li>${esc(q)}</li>`).join('')}</ol></div>`:''}
     ${it.feeds?`<div class="sec"><h4>يغذّي</h4><div class="feeds">${it.feeds.map(f=>`<span>${f}</span>`).join('')}</div></div>`:''}
     ${s.updatedAt?`<div style="text-align:center;color:var(--ink3);font-size:12px">آخر تعديل ${esc(s.by||'')} ${new Date(s.updatedAt).toLocaleString('ar-SY-u-nu-latn',{dateStyle:'medium',timeStyle:'short'})}</div>`:''}
   </div>`;
