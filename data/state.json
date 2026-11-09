@@ -2,13 +2,21 @@
  "items": {
   "ACU-00119-SYR-ERC-ALP-RL-01": {
    "stages": [
+    true,
+    false,
     true
    ],
-   "updatedAt": 1794209618274,
-   "by": "المصور والمونتير"
+   "updatedAt": 1794209621106,
+   "by": "المشرف العام"
   }
  },
  "log": [
+  {
+   "id": "ACU-00119-SYR-ERC-ALP-RL-01",
+   "label": "t",
+   "by": "المشرف العام",
+   "at": 1794209621106
+  },
   {
    "id": "ACU-00119-SYR-ERC-ALP-RL-01",
    "label": "t",
