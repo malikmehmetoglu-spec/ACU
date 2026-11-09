@@ -36,30 +36,70 @@ async function write(state, sha, msg) {
   return gh(API, { method: 'PUT', body: JSON.stringify(body), headers: { 'Content-Type': 'application/json' } });
 }
 
+const ROLES = {
+  supervisor: { env: 'PASS_SUPERVISOR', name: 'المشرف العام' },
+  manager: { env: 'PASS_MANAGER', name: 'المدير الإعلامي' },
+  crew: { env: 'PASS_CREW', name: 'المصور والمونتير' },
+};
+const REVIEW = { reel: 2, promo: 3 };
+function roleOf(pass) {
+  if (!pass) return null;
+  for (const [k, r] of Object.entries(ROLES)) if (process.env[r.env] && process.env[r.env] === pass) return k;
+  return null;
+}
+// returns error string or null
+function check(role, group, old, patch) {
+  const keys = Object.keys(patch);
+  const rv = REVIEW[group];
+  const changed = [];
+  if (patch.stages) {
+    const a = old.stages || [], b = patch.stages;
+    for (let i = 0; i < Math.max(a.length, b.length); i++) if (!!a[i] !== !!b[i]) changed.push(i);
+  }
+  if (role === 'supervisor') {
+    if (keys.some(k => !['stages', 'reviewNote'].includes(k))) return 'FORBIDDEN';
+    if (changed.some(i => i !== rv)) return 'FORBIDDEN';
+    return null;
+  }
+  if (keys.includes('reviewNote')) return 'FORBIDDEN';
+  if (rv !== undefined && changed.includes(rv)) return 'FORBIDDEN';
+  if (role === 'crew' && keys.some(k => !['stages', 'link', 'notes'].includes(k))) return 'FORBIDDEN';
+  return null;
+}
+
 module.exports = async (req, res) => {
   res.setHeader('Cache-Control', 'no-store');
   if (!process.env.GITHUB_TOKEN) return res.status(503).json({ error: 'NO_TOKEN' });
-  if (process.env.APP_PASSWORD && req.headers['x-pass'] !== process.env.APP_PASSWORD)
-    return res.status(401).json({ error: 'AUTH' });
+  const role = roleOf(req.headers['x-pass']);
+  if (!role) return res.status(401).json({ error: 'AUTH' });
+  const who = ROLES[role].name;
   try {
     if (req.method === 'GET') {
       const { state } = await read();
-      return res.status(200).json(state);
+      return res.status(200).json({ ...state, role, who });
     }
     if (req.method === 'POST') {
       let body = req.body;
       if (typeof body === 'string') body = JSON.parse(body);
-      const { id, patch, by, label } = body || {};
-      if (!id || typeof patch !== 'object') return res.status(400).json({ error: 'BAD' });
+      const { id, group, patch, label } = body || {};
+      if (!id || !patch || typeof patch !== 'object') return res.status(400).json({ error: 'BAD' });
       for (let i = 0; i < 5; i++) {
         const { state, sha } = await read();
         state.items = state.items || {};
         state.log = state.log || [];
-        state.items[id] = { ...(state.items[id] || {}), ...patch, updatedAt: Date.now(), by: by || '' };
-        if (label) state.log.unshift({ id, label, by: by || '', at: Date.now() });
+        const old = state.items[id] || {};
+        const err = check(role, group, old, patch);
+        if (err) return res.status(403).json({ error: err });
+        const next = { ...old, ...patch, updatedAt: Date.now(), by: who };
+        if (patch.reviewNote) {
+          delete next.reviewNote;
+          next.reviewNotes = [...(old.reviewNotes || []), { text: String(patch.reviewNote).slice(0, 2000), at: Date.now(), by: who }];
+        }
+        state.items[id] = next;
+        if (label) state.log.unshift({ id, label, by: who, at: Date.now() });
         state.log = state.log.slice(0, 60);
         const w = await write(state, sha, `${id}: ${label || 'update'}`);
-        if (w.ok) return res.status(200).json(state);
+        if (w.ok) return res.status(200).json({ ...state, role, who });
         if (w.status !== 409 && w.status !== 422) throw new Error('GitHub write ' + w.status);
         await new Promise(r => setTimeout(r, 300 + Math.random() * 500));
       }

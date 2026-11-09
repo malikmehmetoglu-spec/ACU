@@ -199,6 +199,22 @@ button{cursor:pointer}
 
 .toast{position:fixed;bottom:24px;left:50%;transform:translate(-50%,120px);background:var(--ink);color:#fff;padding:12px 18px;border-radius:14px;font-weight:700;font-size:14px;z-index:90;transition:transform .35s cubic-bezier(.2,.9,.3,1.3)}
 .toast.on{transform:translate(-50%,0)}
+
+.stage.lock{cursor:not-allowed;opacity:.55}.stage.lock.on{opacity:.9}
+.stage.rv{box-shadow:inset 0 0 0 1.5px color-mix(in srgb,var(--t) 45%,transparent)}
+.check.lock{cursor:not-allowed;opacity:.6}
+.field input:disabled,.field select:disabled,.field textarea:disabled,#f_link:disabled{opacity:.6;cursor:not-allowed}
+.queue{background:#fff;border:1.5px solid #FFD27A;border-radius:22px;padding:14px 16px;margin:6px 0 10px;display:flex;gap:16px;align-items:center;box-shadow:0 14px 30px -20px rgba(255,182,39,.8)}
+.qh{display:flex;align-items:center;gap:10px;flex:none}.qh b{display:block;font-size:16px}.qh small{color:var(--ink3);font-size:12px}
+.qn{width:42px;height:42px;border-radius:14px;background:var(--sun);display:grid;place-items:center;font-weight:900;font-size:20px;animation:pulse2 2s infinite}
+@keyframes pulse2{50%{box-shadow:0 0 0 8px #ffb62722}}
+.qitems{display:flex;gap:8px;overflow-x:auto;padding:4px 2px}
+.qitems button{flex:none;display:flex;align-items:center;gap:8px;border:1.5px solid var(--line);background:var(--paper);border-radius:14px;padding:9px 12px;font-weight:700;font-size:13px;transition:all .2s}
+.qitems button:hover{border-color:var(--t);background:#fff;transform:translateY(-2px)}
+.qitems i{width:8px;height:8px;border-radius:50%;background:var(--t)}.qitems .code{font-size:11px;color:var(--ink3)}
+.rvsec{border-color:#FFD27A}.rvlist{display:grid;gap:8px}
+.rvn{background:#FFF8E6;border-radius:14px;padding:10px 12px}.rvn b{font-size:12px;color:#9a6200}.rvn p{margin:4px 0;line-height:1.8;font-size:14px}.rvn small{color:var(--ink3);font-size:11px}
+@media(max-width:700px){.queue{flex-direction:column;align-items:stretch}}
 canvas#fx{position:fixed;inset:0;pointer-events:none;z-index:95}
 
 @media(max-width:1180px){.stats{grid-template-columns:repeat(3,1fr)}}@media(max-width:980px){.hero{grid-template-columns:1fr}.stats{grid-template-columns:repeat(2,1fr)}}
@@ -213,7 +229,7 @@ canvas#fx{position:fixed;inset:0;pointer-events:none;z-index:95}
   <form class="gbox" id="gform">
     <div class="mark"><i></i></div>
     <h2>لوحة إنتاج ACU</h2>
-    <p>مشروع دعم لجان الأحياء</p>
+    <p>مشروع دعم لجان الأحياء<br><small style="color:var(--ink3)">كل دور يدخل بكلمة المرور الخاصة به</small></p>
     <input id="gpass" type="password" placeholder="كلمة المرور" autocomplete="current-password">
     <button class="btn dark">دخول</button>
   </form>
@@ -226,7 +242,7 @@ canvas#fx{position:fixed;inset:0;pointer-events:none;z-index:95}
     </div>
     <div class="spacer"></div>
     <div class="who"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="8" r="4"/><path d="M4 21c1-4 4.5-6 8-6s7 2 8 6"/></svg>
-      <select id="me"><option value="">من أنت؟</option><option>مدير الفريق</option><option>المصور</option><option>المونتير</option></select></div>
+      <b id="rolen" style="font-size:13px;padding:6px 2px">...</b><button id="logout" title="تسجيل الخروج" style="border:0;background:var(--paper);border-radius:99px;padding:6px 10px;font-size:12px;font-weight:800;color:var(--ink2)">خروج</button></div>
     <div class="sync" id="sync"><span class="dot"></span><span id="synct">متصل</span></div>
   </div>
 
@@ -251,6 +267,7 @@ canvas#fx{position:fixed;inset:0;pointer-events:none;z-index:95}
     </div>
   </div>
 
+  <div id="queue"></div>
   <div id="list"></div>
 </div>
 
@@ -266,7 +283,12 @@ const GROUPS={shoot:{n:'طلعات التصوير',s:['تنسيق','تصوير',
 const TYPES={DS:'جلسة حوارية',TR:'تدريب لجان',CI:'مبادرة مجتمعية',SP:'مشروع خدمي',DR:'تصوير جوي',FN:'برومو ختامي',WP:'مهمة عمل',PT:'محطة المسار',CO:'توجيه مستمر'};
 const CITIES=['حلب','حماة','حمص'];
 const CODE={'حلب':'ALP','حماة':'HAM','حمص':'HMS'};
-const WHO={'مدير الفريق':'#FF6B4A','المصور':'#10A88F','المونتير':'#2F80ED'};
+const WHO={'المدير الإعلامي':'#FF6B4A','المصور والمونتير':'#10A88F'};
+const REVIEW={reel:2,promo:3};
+let ROLE='manager',ME='';
+function canStage(it,k){const rv=REVIEW[it.group];if(ROLE==='supervisor')return k===rv;if(k===rv)return false;return true}
+function canField(f){if(ROLE==='supervisor')return false;if(ROLE==='crew')return['link','notes'].includes(f);return true}
+const ROLEN={supervisor:'المشرف العام',manager:'المدير الإعلامي',crew:'المصور والمونتير'};
 let ITEMS=[],S={items:{},log:[]},LOCAL=false;
 let F={group:'all',city:'all',status:'all',q:'',view:'grid'};
 const $=s=>document.querySelector(s);
@@ -288,6 +310,7 @@ const pass=()=>ls.get('acu_pass','');
 async function api(method,body){
   const r=await fetch('/api/state',{method,headers:{'Content-Type':'application/json','x-pass':pass()},body:body?JSON.stringify(body):undefined});
   if(r.status===401){showGate(true);throw new Error('auth')}
+  if(r.status===403)throw new Error('forbidden');
   if(r.status===503||r.status===404){LOCAL=true;throw new Error('local')}
   if(!r.ok)throw new Error('sync');
   return r.json();
@@ -295,18 +318,20 @@ async function api(method,body){
 function setSync(k,t){const el=$('#sync');el.className='sync '+k;$('#synct').textContent=t}
 async function pull(silent){
   if(LOCAL)return;
-  try{if(!silent)setSync('busy','تحديث...');const s=await api('GET');S=s;S.items=S.items||{};S.log=S.log||[];ls.set('acu_cache',S);render();setSync('','متصل')}
-  catch(e){if(LOCAL){S=ls.get('acu_cache',S);setSync('local','حفظ محلي');render()}else if(e.message!=='auth')setSync('err','غير متصل')}
+  try{if(!silent)setSync('busy','تحديث...');const s=await api('GET');S=s;if(s.role){ROLE=s.role;ME=s.who;$('#rolen').textContent=ME}S.items=S.items||{};S.log=S.log||[];ls.set('acu_cache',S);render();setSync('','متصل')}
+  catch(e){if(LOCAL){S=ls.get('acu_cache',S);ROLE='manager';$('#rolen').textContent='وضع محلي';setSync('local','حفظ محلي');render()}else if(e.message!=='auth')setSync('err','غير متصل')}
 }
 let queue=Promise.resolve();
 function save(id,patch,label){
-  S.items[id]={...st(id),...patch,updatedAt:Date.now(),by:ls.get('acu_me','')};
-  if(label)S.log.unshift({id,label,by:ls.get('acu_me',''),at:Date.now()});
+  const prev=st(id),it=ITEMS.find(i=>i.id===id);
+  const loc={...patch};if(loc.reviewNote){loc.reviewNotes=[...(prev.reviewNotes||[]),{text:loc.reviewNote,at:Date.now(),by:ME}];delete loc.reviewNote}
+  S.items[id]={...prev,...loc,updatedAt:Date.now(),by:ME};
+  if(label)S.log.unshift({id,label,by:ME,at:Date.now()});
   ls.set('acu_cache',S);render();
   if(LOCAL)return;
   queue=queue.then(async()=>{setSync('busy','حفظ...');
-    try{const s=await api('POST',{id,patch,label,by:ls.get('acu_me','')});S=s;ls.set('acu_cache',S);setSync('','محفوظ');renderSoft()}
-    catch(e){setSync('err','لم يُحفظ، إعادة المحاولة');setTimeout(()=>save(id,patch),4000)}});
+    try{const s=await api('POST',{id,group:it.group,patch,label});S=s;ls.set('acu_cache',S);setSync('','محفوظ');renderSoft();if(OPEN===id)renderDrawer(id)}
+    catch(e){if(e.message==='forbidden'){S.items[id]=prev;render();toast('ليس لديك صلاحية لهذا التعديل');setSync('','متصل')}else if(e.message!=='auth'){setSync('err','لم يُحفظ، إعادة المحاولة');setTimeout(()=>save(id,patch,label),4000)}}});
 }
 
 /* ---------- render ---------- */
@@ -350,7 +375,7 @@ function cardHTML(it,i){
       ${it.desc?`<p class="desc">${esc(it.desc)}</p>`:''}
       ${it.feeds?`<div class="feeds">${it.feeds.map(f=>`<span>${f}</span>`).join('')}</div>`:''}
     </div>
-    <div class="stages">${stages(it).map((n,k)=>`<button class="stage ${d[k]?'on':''}" data-stage="${it.id}|${k}">${n}</button>`).join('')}</div>
+    <div class="stages">${stages(it).map((n,k)=>`<button class="stage ${d[k]?'on':''} ${canStage(it,k)?'':'lock'} ${REVIEW[it.group]===k?'rv':''}" data-stage="${it.id}|${k}">${n}</button>`).join('')}</div>
     <div class="cfoot">${link}${av}</div>
   </article>`;
 }
@@ -365,14 +390,20 @@ function renderList(){
 function renderLog(){
   $('#logp').innerHTML=(S.log||[]).slice(0,40).map(x=>`<div>${esc(x.label)}<small>${esc(x.by||'')} | ${new Date(x.at).toLocaleString('ar-SY-u-nu-latn',{dateStyle:'medium',timeStyle:'short'})}</small></div>`).join('')||'<div>لا توجد تحديثات بعد</div>';
 }
-function render(){renderHero();renderChips();renderList();renderLog();if(OPEN)renderDrawer(OPEN)}
-function renderSoft(){renderHero();renderChips();renderLog()}
+function renderQueue(){
+  const q=ITEMS.filter(it=>{const rv=REVIEW[it.group];if(rv===undefined)return false;const d=st(it.id).stages||[];for(let k=0;k<rv;k++)if(!d[k])return false;return!d[rv]});
+  if(!q.length){$('#queue').innerHTML='';return}
+  $('#queue').innerHTML=`<div class="queue"><div class="qh"><span class="qn">${q.length}</span><div><b>${ROLE==='supervisor'?'بانتظار مراجعتك':'بانتظار مراجعة المشرف العام'}</b><small>مخرجات انتهى مونتاجها</small></div></div><div class="qitems">${q.map(it=>`<button data-q="${it.id}" style="--t:var(--${it.type})"><i></i>${esc(title(it).slice(0,48))}<span class="code">${esc(codeOf(it).replace('ACU-00119-SYR-ERC-',''))}</span></button>`).join('')}</div></div>`;
+}
+function render(){renderHero();renderChips();renderQueue();renderList();renderLog();if(OPEN)renderDrawer(OPEN)}
+function renderSoft(){renderHero();renderChips();renderQueue();renderLog()}
 
 /* ---------- interactions ---------- */
 document.addEventListener('click',e=>{
   const b=e.target.closest('[data-stage]');
-  if(b){e.stopPropagation();const[id,k]=b.dataset.stage.split('|');toggleStage(id,+k,b);return}
-  const lk=e.target.closest('[data-link]');if(lk){e.stopPropagation();linkPop(lk.dataset.link,lk);return}
+  if(b){e.stopPropagation();const[id,k]=b.dataset.stage.split('|');if(b.classList.contains('lock')){toast(ROLE==='supervisor'?'صلاحيتك هي المراجعة والاعتماد فقط':'هذه المرحلة يعتمدها المشرف العام');return}toggleStage(id,+k,b);return}
+  const qo=e.target.closest('[data-q]');if(qo){openDrawer(qo.dataset.q);return}
+  const lk=e.target.closest('[data-link]');if(lk){e.stopPropagation();if(!canField('link')){toast('ليس لديك صلاحية تعديل الروابط');return}linkPop(lk.dataset.link,lk);return}
   const op=e.target.closest('[data-open]');if(op){openDrawer(op.dataset.open);return}
   const g=e.target.closest('[data-g]');if(g){F.group=F.group===g.dataset.g?'all':g.dataset.g;F.status='all';render();return}
   const c=e.target.closest('[data-city]');if(c){F.city=c.dataset.city;render();return}
@@ -417,15 +448,16 @@ function renderDrawer(id){
     <div class="meta" style="margin-top:6px"><span class="tag" style="--t:var(--${it.type})">${TYPES[it.type]}</span>${cityOf(it)?`<span class="city">${esc(cityOf(it))}</span>`:''}<span class="city">${Math.round(pct(it)*100)}%</span></div>
     <h2>${esc(title(it))}</h2>${it.spec?`<div style="color:var(--ink2);font-size:14px">${esc(it.spec)}</div>`:''}</div>
   <div class="dbody">
-    <div class="sec"><h4>${it.group==='path'?'ما تم تصويره':'مراحل العمل'}</h4>${it.stageHint?`<div style="font-size:12px;color:var(--ink3);margin:-4px 0 8px">${esc(it.stageHint)}</div>`:''}<div class="checks">${stages(it).map((n,k)=>`<button class="check ${d[k]?'on':''}" data-stage="${id}|${k}"><span class="bx"></span>${n}</button>`).join('')}</div></div>
-    <div class="sec"><h4>الرابط</h4><div class="openlink"><input id="f_link" class="ltr" style="border:1.5px solid var(--line);border-radius:12px;padding:11px;background:var(--paper);outline:0" placeholder="https://" value="${esc(s.link||'')}">${s.link?`<a class="btn dark" href="${esc(s.link)}" target="_blank" rel="noopener" style="text-decoration:none;display:grid;place-items:center">فتح</a>`:''}</div></div>
+    <div class="sec"><h4>${it.group==='path'?'ما تم تصويره':'مراحل العمل'}</h4>${it.stageHint?`<div style="font-size:12px;color:var(--ink3);margin:-4px 0 8px">${esc(it.stageHint)}</div>`:''}<div class="checks">${stages(it).map((n,k)=>`<button class="check ${d[k]?'on':''} ${canStage(it,k)?'':'lock'}" data-stage="${id}|${k}"><span class="bx"></span>${n}${REVIEW[it.group]===k?'<small>اعتماد المشرف العام</small>':''}</button>`).join('')}</div></div>
+    <div class="sec"><h4>الرابط</h4><div class="openlink"><input id="f_link" data-f="link" class="ltr" style="border:1.5px solid var(--line);border-radius:12px;padding:11px;background:var(--paper);outline:0" placeholder="https://" value="${esc(s.link||'')}">${s.link?`<a class="btn dark" href="${esc(s.link)}" target="_blank" rel="noopener" style="text-decoration:none;display:grid;place-items:center">فتح</a>`:''}</div></div>
     <div class="sec"><h4>التفاصيل</h4>
-      ${!it.named||it.group==='reel'&&!it.named?`<div class="field"><label>الاسم المعتمد من ACU</label><input id="f_name" value="${esc(s.name||'')}" placeholder="اكتب اسم المبادرة أو المشروع"></div>`:''}
-      ${(!it.city||it.id.includes('-XXX-'))?`<div class="field"><label>المدينة</label><select id="f_city"><option value="">اختر</option>${CITIES.map(c=>`<option ${cityOf(it)===c?'selected':''}>${c}</option>`).join('')}</select></div>`:''}
-      <div class="two"><div class="field"><label>المسؤول</label><select id="f_who"><option value="">غير محدد</option>${Object.keys(WHO).map(w=>`<option ${s.who===w?'selected':''}>${w}</option>`).join('')}</select></div>
-      <div class="field"><label>التاريخ</label><input id="f_date" type="date" class="ltr" value="${esc(s.date||'')}"></div></div>
-      <div class="field" style="margin:0"><label>ملاحظات</label><textarea id="f_notes" placeholder="أي تفاصيل، أسماء، أرقام تواصل...">${esc(s.notes||'')}</textarea></div>
+      ${!it.named||it.group==='reel'&&!it.named?`<div class="field"><label>الاسم المعتمد من ACU</label><input id="f_name" data-f="name" value="${esc(s.name||'')}" placeholder="اكتب اسم المبادرة أو المشروع"></div>`:''}
+      ${(!it.city||it.id.includes('-XXX-'))?`<div class="field"><label>المدينة</label><select id="f_city" data-f="city"><option value="">اختر</option>${CITIES.map(c=>`<option ${cityOf(it)===c?'selected':''}>${c}</option>`).join('')}</select></div>`:''}
+      <div class="two"><div class="field"><label>المسؤول</label><select id="f_who" data-f="who"><option value="">غير محدد</option>${Object.keys(WHO).map(w=>`<option ${s.who===w?'selected':''}>${w}</option>`).join('')}</select></div>
+      <div class="field"><label>التاريخ</label><input id="f_date" data-f="date" type="date" class="ltr" value="${esc(s.date||'')}"></div></div>
+      <div class="field" style="margin:0"><label>ملاحظات</label><textarea id="f_notes" data-f="notes" placeholder="أي تفاصيل، أسماء، أرقام تواصل...">${esc(s.notes||'')}</textarea></div>
     </div>
+    <div class="sec rvsec"><h4>ملاحظات المراجعة</h4>${(s.reviewNotes||[]).length?`<div class="rvlist">${s.reviewNotes.map((n,k)=>`<div class="rvn"><b>جولة ${k+1}</b><p>${esc(n.text)}</p><small>${esc(n.by)} | ${new Date(n.at).toLocaleString('ar-SY-u-nu-latn',{dateStyle:'medium',timeStyle:'short'})}</small></div>`).join('')}</div>`:'<div style="color:var(--ink3);font-size:13px">لا توجد ملاحظات من المشرف العام</div>'}${ROLE==='supervisor'?`<div class="field" style="margin:10px 0 0"><textarea id="rn_text" placeholder="اكتب ملاحظة المراجعة..."></textarea></div><button class="btn dark" id="rn_send" style="margin-top:8px">إرسال الملاحظة</button>`:''}</div>
     ${it.desc?`<div class="sec"><h4>الفكرة</h4><div style="line-height:1.9;font-size:14.5px">${esc(it.desc)}</div>${it.cta?`<div style="margin-top:8px;font-weight:800;color:var(--rose)">نص الختام: ${esc(it.cta)}</div>`:''}</div>`:''}
     ${it.people?`<div class="sec"><h4>الشخصيات</h4><div style="line-height:1.9">${it.people.map(esc).join('، ')}</div></div>`:''}
     ${it.scenes?`<div class="sec"><h4>المشاهد</h4><table class="scn">${it.scenes.map(r=>`<tr>${r.map(c=>`<td>${esc(c)}</td>`).join('')}</tr>`).join('')}</table></div>`:''}
@@ -434,6 +466,8 @@ function renderDrawer(id){
     ${s.updatedAt?`<div style="text-align:center;color:var(--ink3);font-size:12px">آخر تعديل ${esc(s.by||'')} ${new Date(s.updatedAt).toLocaleString('ar-SY-u-nu-latn',{dateStyle:'medium',timeStyle:'short'})}</div>`:''}
   </div>`;
   const bind=(f,key,lbl)=>{const el=dr.querySelector('#'+f);if(!el)return;el.addEventListener('change',()=>{let v=el.value.trim();if(key==='link'&&v&&!/^https?:\/\//i.test(v))v='https://'+v;save(id,{[key]:v},`${lbl}: ${title(it).slice(0,60)}`);el.blur()})};
+  dr.querySelectorAll('[data-f]').forEach(el=>{if(!canField(el.dataset.f))el.disabled=true});
+  const rn=dr.querySelector('#rn_send');if(rn)rn.onclick=()=>{const t=dr.querySelector('#rn_text');const v=t.value.trim();if(!v)return;t.value='';save(id,{reviewNote:v},`ملاحظة مراجعة: ${title(it).slice(0,60)}`);toast('تم إرسال الملاحظة')};
   bind('f_link','link','رابط');bind('f_name','name','تسمية');bind('f_city','city','مدينة');bind('f_who','who','مسؤول');bind('f_date','date','تاريخ');bind('f_notes','notes','ملاحظة');
 }
 
@@ -442,7 +476,7 @@ let tt;function toast(m){const t=$('#toast');t.textContent=m;t.classList.add('on
 $('#q').addEventListener('input',e=>{F.q=e.target.value;renderList()});
 document.addEventListener('keydown',e=>{if(e.key==='/'&&document.activeElement.tagName!=='INPUT'&&document.activeElement.tagName!=='TEXTAREA'){e.preventDefault();$('#q').focus()}if(e.key==='Escape'){closePop();closeDrawer()}});
 $('#logbtn').onclick=()=>$('#logp').classList.toggle('on');
-$('#me').value=ls.get('acu_me','');$('#me').onchange=e=>ls.set('acu_me',e.target.value);
+$('#logout').onclick=()=>{ls.set('acu_pass','');ls.set('acu_cache',null);location.reload()};
 
 /* confetti */
 const cv=$('#fx'),cx=cv.getContext('2d');let P=[];
@@ -452,12 +486,12 @@ function tick(){cx.clearRect(0,0,innerWidth,innerHeight);P.forEach(p=>{p.vy+=.45
 
 /* gate */
 function showGate(err){$('#gate').hidden=false;if(err&&pass()){$('.gbox').classList.add('shake');setTimeout(()=>$('.gbox').classList.remove('shake'),400)}$('#gpass').focus()}
-$('#gform').onsubmit=async e=>{e.preventDefault();ls.set('acu_pass',$('#gpass').value);$('#gate').hidden=true;await pull()};
+$('#gform').onsubmit=async e=>{e.preventDefault();ls.set('acu_pass',$('#gpass').value);$('#gate').hidden=true;await pull();render()};
 
 /* boot */
 (async()=>{
   ITEMS=await (await fetch('/items.json')).json();
-  S=ls.get('acu_cache',S);render();
+  S=ls.get('acu_cache',null)||S;if(!pass()&&!LOCAL){showGate()}else render();
   await pull();
   setInterval(()=>{if(!document.hidden&&!OPEN)pull(true)},20000);
   document.addEventListener('visibilitychange',()=>{if(!document.hidden)pull(true)});
