@@ -215,6 +215,7 @@ button{cursor:pointer}
 .rvsec{border-color:#FFD27A}.rvlist{display:grid;gap:8px}
 .rvn{background:#FFF8E6;border-radius:14px;padding:10px 12px}.rvn b{font-size:12px;color:#9a6200}.rvn p{margin:4px 0;line-height:1.8;font-size:14px}.rvn small{color:var(--ink3);font-size:11px}
 @media(max-width:700px){.queue{flex-direction:column;align-items:stretch}}
+.tchip{display:inline-flex;align-items:center;gap:7px}.tchip i{width:9px;height:9px;border-radius:50%;background:var(--t)}.tchip.on{background:var(--t);border-color:var(--t)}.tchip.on i{background:#fff}
 canvas#fx{position:fixed;inset:0;pointer-events:none;z-index:95}
 
 @media(max-width:1180px){.stats{grid-template-columns:repeat(3,1fr)}}@media(max-width:980px){.hero{grid-template-columns:1fr}.stats{grid-template-columns:repeat(2,1fr)}}
@@ -265,6 +266,7 @@ canvas#fx{position:fixed;inset:0;pointer-events:none;z-index:95}
       <div class="spacer"></div>
       <div class="chips" id="status"></div>
     </div>
+    <div class="toolrow" style="margin-top:10px"><div class="chips" id="types"></div></div>
   </div>
 
   <div id="queue"></div>
@@ -290,7 +292,7 @@ function canStage(it,k){const rv=REVIEW[it.group];if(ROLE==='supervisor')return 
 function canField(f){if(ROLE==='supervisor')return false;if(ROLE==='crew')return['link','notes'].includes(f);return true}
 const ROLEN={supervisor:'المشرف العام',manager:'المدير الإعلامي',crew:'المصور والمونتير'};
 let ITEMS=[],S={items:{},log:[]},LOCAL=false;
-let F={group:'all',city:'all',status:'all',q:'',view:'grid'};
+let F={group:'all',city:'all',status:'all',type:'all',q:'',view:'grid'};
 const $=s=>document.querySelector(s);
 const ls={get:(k,d)=>{try{return JSON.parse(localStorage.getItem(k))??d}catch(e){return d}},set:(k,v)=>{try{localStorage.setItem(k,JSON.stringify(v))}catch(e){}}};
 const esc=s=>String(s??'').replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
@@ -338,7 +340,7 @@ function save(id,patch,label){
 function counts(list){return{all:list.length,done:list.filter(i=>status(i)==='done').length}}
 function filtered(){
   const q=F.q.trim();
-  return ITEMS.filter(it=>(F.group==='all'||it.group===F.group)&&(F.city==='all'||cityOf(it)===F.city||(F.city==='none'&&!cityOf(it)))&&(F.status==='all'||status(it)===F.status)
+  return ITEMS.filter(it=>(F.group==='all'||it.group===F.group)&&(F.city==='all'||cityOf(it)===F.city||(F.city==='none'&&!cityOf(it)))&&(F.status==='all'||status(it)===F.status)&&(F.type==='all'||it.type===F.type)
     &&(!q||[title(it),codeOf(it),cityOf(it),TYPES[it.type],it.desc,st(it.id).notes].join(' ').includes(q)));
 }
 function renderHero(){
@@ -353,6 +355,10 @@ function renderHero(){
 function renderChips(){
   const cityList=[['all','كل المدن'],...CITIES.map(c=>[c,c]),['كل المدن','مشترك'],['none','لم تُحدد']];
   $('#cities').innerHTML=cityList.map(([v,n])=>`<button class="chip ${F.city===v?'on':''}" data-city="${v}">${n}</button>`).join('');
+  const tb=ITEMS.filter(it=>F.group==='all'||it.group===F.group);
+  const tl=Object.keys(TYPES).filter(t=>tb.some(i=>i.type===t));
+  $('#types').innerHTML=`<button class="chip ${F.type==='all'?'on':''}" data-ty="all">كل الأنواع</button>`+tl.map(t=>`<button class="chip tchip ${F.type===t?'on':''}" data-ty="${t}" style="--t:var(--${t})"><i></i>${TYPES[t]}<span class="c">${tb.filter(i=>i.type===t).length}</span></button>`).join('');
+  if(F.type!=='all'&&!tl.includes(F.type))F.type='all';
   const sl=[['all','الكل'],['todo','لم يبدأ'],['wip','قيد العمل'],['done','منجز']];
   const base=ITEMS.filter(it=>F.group==='all'||it.group===F.group);
   $('#status').innerHTML=sl.map(([v,n])=>`<button class="chip ${F.status===v?'on':''}" data-st="${v}">${n}<span class="c">${v==='all'?base.length:base.filter(i=>status(i)===v).length}</span></button>`).join('');
@@ -407,6 +413,7 @@ document.addEventListener('click',e=>{
   const op=e.target.closest('[data-open]');if(op){openDrawer(op.dataset.open);return}
   const g=e.target.closest('[data-g]');if(g){F.group=F.group===g.dataset.g?'all':g.dataset.g;F.status='all';render();return}
   const c=e.target.closest('[data-city]');if(c){F.city=c.dataset.city;render();return}
+  const ty=e.target.closest('[data-ty]');if(ty){F.type=ty.dataset.ty;render();return}
   const s=e.target.closest('[data-st]');if(s){F.status=s.dataset.st;render();return}
   const v=e.target.closest('#view button');if(v){F.view=v.dataset.v;document.querySelectorAll('#view button').forEach(x=>x.classList.toggle('on',x===v));renderList();return}
   if(!e.target.closest('.pop'))closePop();
