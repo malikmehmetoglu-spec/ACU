@@ -216,6 +216,9 @@ button{cursor:pointer}
 .rvn{background:#FFF8E6;border-radius:14px;padding:10px 12px}.rvn b{font-size:12px;color:#9a6200}.rvn p{margin:4px 0;line-height:1.8;font-size:14px}.rvn small{color:var(--ink3);font-size:11px}
 @media(max-width:700px){.queue{flex-direction:column;align-items:stretch}}
 .tchip{display:inline-flex;align-items:center;gap:7px}.tchip i{width:9px;height:9px;border-radius:50%;background:var(--t)}.tchip.on{background:var(--t);border-color:var(--t)}.tchip.on i{background:#fff}
+.prop{font-size:11px;font-weight:800;color:#9a6200;background:#FFF7E0;border:1.5px dashed #F0B43C;padding:1px 9px;border-radius:99px;cursor:help}
+.propbar{display:flex;align-items:center;gap:12px;justify-content:space-between;background:#FFF7E0;border:1.5px dashed #F0B43C;border-radius:18px;padding:12px 14px;margin-bottom:12px}.propbar b{display:block;font-size:14px;color:#8a5600}.propbar small{color:var(--ink2);font-size:12.5px}
+.propbar.ok{background:#EEF9F0;border:1.5px solid #9ED9A8}.propbar.ok b{color:#2f8a3e}
 canvas#fx{position:fixed;inset:0;pointer-events:none;z-index:95}
 
 @media(max-width:1180px){.stats{grid-template-columns:repeat(3,1fr)}}@media(max-width:980px){.hero{grid-template-columns:1fr}.stats{grid-template-columns:repeat(2,1fr)}}
@@ -302,6 +305,7 @@ const st=id=>S.items[id]||{};
 const stages=it=>it.stages||GROUPS[it.group].s;
 const done=it=>{const d=st(it.id).stages||[];return stages(it).filter((_,i)=>d[i]).length};
 const pct=it=>done(it)/stages(it).length;
+const isProp=it=>!!it.proposed&&!st(it.id).approved;
 const status=it=>{const p=pct(it);return p===1?'done':p>0?'wip':'todo'};
 const title=it=>st(it.id).name?st(it.id).name:it.title;
 const cityOf=it=>st(it.id).city||it.city||'';
@@ -340,7 +344,7 @@ function save(id,patch,label){
 function counts(list){return{all:list.length,done:list.filter(i=>status(i)==='done').length}}
 function filtered(){
   const q=F.q.trim();
-  return ITEMS.filter(it=>(F.group==='all'||it.group===F.group)&&(F.city==='all'||cityOf(it)===F.city||(F.city==='none'&&!cityOf(it)))&&(F.status==='all'||status(it)===F.status)&&(F.type==='all'||it.type===F.type)
+  return ITEMS.filter(it=>(F.group==='all'||it.group===F.group)&&(F.city==='all'||cityOf(it)===F.city||(F.city==='none'&&!cityOf(it)))&&(F.status==='all'||(F.status==='prop'?isProp(it):status(it)===F.status))&&(F.type==='all'||it.type===F.type)
     &&(!q||[title(it),codeOf(it),cityOf(it),TYPES[it.type],it.desc,st(it.id).notes].join(' ').includes(q)));
 }
 function renderHero(){
@@ -359,9 +363,9 @@ function renderChips(){
   const tl=Object.keys(TYPES).filter(t=>tb.some(i=>i.type===t));
   $('#types').innerHTML=`<button class="chip ${F.type==='all'?'on':''}" data-ty="all">كل الأنواع</button>`+tl.map(t=>`<button class="chip tchip ${F.type===t?'on':''}" data-ty="${t}" style="--t:var(--${t})"><i></i>${TYPES[t]}<span class="c">${tb.filter(i=>i.type===t).length}</span></button>`).join('');
   if(F.type!=='all'&&!tl.includes(F.type))F.type='all';
-  const sl=[['all','الكل'],['todo','لم يبدأ'],['wip','قيد العمل'],['done','منجز']];
+  const sl=[['all','الكل'],['todo','لم يبدأ'],['wip','قيد العمل'],['done','منجز'],['prop','بانتظار الاعتماد']];
   const base=ITEMS.filter(it=>F.group==='all'||it.group===F.group);
-  $('#status').innerHTML=sl.map(([v,n])=>`<button class="chip ${F.status===v?'on':''}" data-st="${v}">${n}<span class="c">${v==='all'?base.length:base.filter(i=>status(i)===v).length}</span></button>`).join('');
+  $('#status').innerHTML=sl.map(([v,n])=>`<button class="chip ${F.status===v?'on':''}" data-st="${v}">${n}<span class="c">${v==='all'?base.length:v==='prop'?base.filter(isProp).length:base.filter(i=>status(i)===v).length}</span></button>`).join('');
 }
 const ICON_LINK='<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M10 14a5 5 0 0 0 7 0l3-3a5 5 0 0 0-7-7l-1 1"/><path d="M14 10a5 5 0 0 0-7 0l-3 3a5 5 0 0 0 7 7l1-1"/></svg>';
 const ICON_EDIT='<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M4 20h4L19 9l-4-4L4 16z"/></svg>';
@@ -376,7 +380,7 @@ function cardHTML(it,i){
     <div class="strip"></div>
     <div class="cbody" data-open="${it.id}">
       <span class="code">${esc(codeOf(it))}</span>
-      <div class="meta"><span class="tag">${TYPES[it.type]}</span>${cityOf(it)?`<span class="city">${esc(cityOf(it))}</span>`:''}${it.optional?'<span class="opt">اختياري</span>':''}${s.date?`<span class="city">${esc(s.date)}</span>`:''}</div>
+      <div class="meta"><span class="tag">${TYPES[it.type]}</span>${cityOf(it)?`<span class="city">${esc(cityOf(it))}</span>`:''}${it.optional?'<span class="opt">اختياري</span>':''}${isProp(it)?`<span class="prop" title="${esc(it.proposed)}">مقترح</span>`:''}${s.date?`<span class="city">${esc(s.date)}</span>`:''}</div>
       <h3>${ph?`<span class="ph">${esc(ttl)}</span>`:esc(ttl)}</h3>
       ${it.desc?`<p class="desc">${esc(it.desc)}</p>`:''}
       ${it.feeds?`<div class="feeds">${it.feeds.map(f=>`<span>${f}</span>`).join('')}</div>`:''}
@@ -455,6 +459,7 @@ function renderDrawer(id){
     <div class="meta" style="margin-top:6px"><span class="tag" style="--t:var(--${it.type})">${TYPES[it.type]}</span>${cityOf(it)?`<span class="city">${esc(cityOf(it))}</span>`:''}<span class="city">${Math.round(pct(it)*100)}%</span></div>
     <h2>${esc(title(it))}</h2>${it.spec?`<div style="color:var(--ink2);font-size:14px">${esc(it.spec)}</div>`:''}</div>
   <div class="dbody">
+    ${it.proposed?(s.approved?`<div class="propbar ok"><div><b>معتمد</b><small>${esc(it.proposed)}</small></div>${ROLE==='manager'?'<button class="btn ghost" id="unapprove">إلغاء الاعتماد</button>':''}</div>`:`<div class="propbar"><div><b>مقترح، بانتظار تأكيد ACU</b><small>${esc(it.proposed)}</small></div>${ROLE==='manager'?'<button class="btn" id="approve">اعتماد</button>':''}</div>`):''}
     <div class="sec"><h4>${it.group==='path'?'ما تم تصويره':'مراحل العمل'}</h4>${it.stageHint?`<div style="font-size:12px;color:var(--ink3);margin:-4px 0 8px">${esc(it.stageHint)}</div>`:''}<div class="checks">${stages(it).map((n,k)=>`<button class="check ${d[k]?'on':''} ${canStage(it,k)?'':'lock'}" data-stage="${id}|${k}"><span class="bx"></span>${n}${REVIEW[it.group]===k?'<small>اعتماد المشرف العام</small>':''}</button>`).join('')}</div></div>
     <div class="sec"><h4>الرابط</h4><div class="openlink"><input id="f_link" data-f="link" class="ltr" style="border:1.5px solid var(--line);border-radius:12px;padding:11px;background:var(--paper);outline:0" placeholder="https://" value="${esc(s.link||'')}">${s.link?`<a class="btn dark" href="${esc(s.link)}" target="_blank" rel="noopener" style="text-decoration:none;display:grid;place-items:center">فتح</a>`:''}</div></div>
     <div class="sec"><h4>التفاصيل</h4>
@@ -468,13 +473,15 @@ function renderDrawer(id){
     ${it.desc?`<div class="sec"><h4>الفكرة</h4><div style="line-height:1.9;font-size:14.5px">${esc(it.desc)}</div>${it.cta?`<div style="margin-top:8px;font-weight:800;color:var(--rose)">نص الختام: ${esc(it.cta)}</div>`:''}</div>`:''}
     ${it.people?`<div class="sec"><h4>الشخصيات</h4><div style="line-height:1.9">${it.people.map(esc).join('، ')}</div></div>`:''}
     ${it.scenes?`<div class="sec"><h4>المشاهد</h4><table class="scn">${it.scenes.map(r=>`<tr>${r.map(c=>`<td>${esc(c)}</td>`).join('')}</tr>`).join('')}</table></div>`:''}
-    ${it.note?`<div class="sec"><h4>ملاحظة</h4><div style="line-height:1.9">${esc(it.note)}</div></div>`:''}${it.extra?`<div class="sec"><h4>لقطات إضافية عند توفرها</h4><ul class="qs">${it.extra.map(x=>`<li>${esc(x)}</li>`).join('')}</ul></div>`:''}${it.questions?`<div class="sec"><h4>أسئلة المقابلات</h4><ol class="qs">${it.questions.map(q=>`<li>${esc(q)}</li>`).join('')}</ol></div>`:''}
+    ${it.note?`<div class="sec"><h4>ملاحظة</h4><div style="line-height:1.9">${esc(it.note)}</div></div>`:''}${it.extra?`<div class="sec"><h4>لقطات إضافية عند توفرها</h4><ul class="qs">${it.extra.map(x=>`<li>${esc(x)}</li>`).join('')}</ul></div>`:''}${it.questions?`<div class="sec"><h4>أسئلة المقابلات <span class="prop">مقترحة</span></h4><ol class="qs">${it.questions.map(q=>`<li>${esc(q)}</li>`).join('')}</ol></div>`:''}
     ${it.feeds?`<div class="sec"><h4>يغذّي</h4><div class="feeds">${it.feeds.map(f=>`<span>${f}</span>`).join('')}</div></div>`:''}
     ${s.updatedAt?`<div style="text-align:center;color:var(--ink3);font-size:12px">آخر تعديل ${esc(s.by||'')} ${new Date(s.updatedAt).toLocaleString('ar-SY-u-nu-latn',{dateStyle:'medium',timeStyle:'short'})}</div>`:''}
   </div>`;
   const bind=(f,key,lbl)=>{const el=dr.querySelector('#'+f);if(!el)return;el.addEventListener('change',()=>{let v=el.value.trim();if(key==='link'&&v&&!/^https?:\/\//i.test(v))v='https://'+v;save(id,{[key]:v},`${lbl}: ${title(it).slice(0,60)}`);el.blur()})};
   dr.querySelectorAll('[data-f]').forEach(el=>{if(!canField(el.dataset.f))el.disabled=true});
   const rn=dr.querySelector('#rn_send');if(rn)rn.onclick=()=>{const t=dr.querySelector('#rn_text');const v=t.value.trim();if(!v)return;t.value='';save(id,{reviewNote:v},`ملاحظة مراجعة: ${title(it).slice(0,60)}`);toast('تم إرسال الملاحظة')};
+  const ap=dr.querySelector('#approve');if(ap)ap.onclick=()=>{save(id,{approved:true},`اعتماد: ${title(it).slice(0,60)}`);toast('تم الاعتماد')};
+  const ua=dr.querySelector('#unapprove');if(ua)ua.onclick=()=>save(id,{approved:false},`إلغاء اعتماد: ${title(it).slice(0,60)}`);
   bind('f_link','link','رابط');bind('f_name','name','تسمية');bind('f_city','city','مدينة');bind('f_who','who','مسؤول');bind('f_date','date','تاريخ');bind('f_notes','notes','ملاحظة');
 }
 
