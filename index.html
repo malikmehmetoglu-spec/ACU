@@ -301,6 +301,10 @@ button{cursor:pointer}
 .clegend{display:flex;gap:14px;margin:-4px 0 10px;font-size:13px;font-weight:700;color:var(--ink2)}
 .clegend span{display:flex;align-items:center;gap:6px}.clegend i{width:12px;height:12px;border-radius:4px;background:var(--c)}
 @media(max-width:900px){.cnt{display:none}.ccity span{font-size:9.5px;padding:1px 4px;border-radius:5px}.cd.has:after{display:none}}
+.rsc{border:1.5px solid var(--t);background:#fff;color:color-mix(in srgb,var(--t) 70%,#000);border-radius:12px;padding:7px 12px;font-weight:800;font-size:13px}.rsc.on,.rsc:hover{background:var(--t);color:#fff}
+.rexp{grid-column:1/-1;background:var(--paper);border-radius:14px;padding:12px 14px;animation:rise .3s both}
+.rexp p{margin:4px 0 10px;line-height:1.9;font-size:14.5px}.rneed{background:#FFF8E1;border-radius:10px;padding:8px 12px}
+.rexp .scn{background:#fff;border-radius:10px;margin-bottom:10px}.rexp .scn tr:first-child td{color:var(--ink2);font-weight:800}
 canvas#fx{position:fixed;inset:0;pointer-events:none;z-index:95}
 
 @media(max-width:1180px){.stats{grid-template-columns:repeat(3,1fr)}}@media(max-width:980px){.hero{grid-template-columns:1fr}.stats{grid-template-columns:repeat(2,1fr)}}
@@ -586,9 +590,12 @@ function rowHTML(it,i){
       <div class="rmeta"><span class="code">${esc(codeOf(it))}</span>${cityOf(it)?`<span class="city">${esc(cityOf(it))}</span>`:''}${it.spec?`<span class="city">${esc(it.spec)}</span>`:''}${s.date?`<span class="city">${esc(s.date)}</span>`:''}</div>
     </div>
     <div class="rstages">${stages(it).map((n,k)=>`<button class="stage ${d[k]?'on':''} ${canStage(it,k)?'':'lock'} ${REVIEW[it.group]===k?'rv':''}" data-stage="${it.id}|${k}">${n}</button>`).join('')}</div>
-    <div class="ract">${link}<button class="rmore" data-open="${it.id}" title="التفاصيل والمحتوى"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M15 6l-6 6 6 6"/></svg></button></div>
+    <div class="ract"><button class="rsc ${EXP.has(it.id)?'on':''}" data-exp="${it.id}">${EXP.has(it.id)?'إخفاء':'السيناريو'}</button>${link}<button class="rmore" data-open="${it.id}" title="التفاصيل والمحتوى"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M15 6l-6 6 6 6"/></svg></button></div>
+    ${EXP.has(it.id)?`<div class="rexp"><p><b>الفكرة:</b> ${esc(s.content??it.desc??'')}</p>${it.scenes?`<table class="scn"><tr><td>الثانية</td><td><b>الصورة</b></td><td><b>الصوت</b></td><td><b>على الشاشة</b></td></tr>${it.scenes.map(r=>`<tr>${r.map(c=>`<td>${esc(c)}</td>`).join('')}</tr>`).join('')}</table>`:''}${it.need?`<p class="rneed"><b>ما يلزم بالتصوير:</b> ${esc(it.need)}</p>`:''}${it.spec?`<p class="mut" style="margin:0;font-size:12px">${esc(it.spec)}</p>`:''}</div>`:''}
   </div>`;
 }
+const EXP=new Set();
+document.addEventListener('click',e=>{const b=e.target.closest('[data-exp]');if(!b)return;e.stopPropagation();const id=b.dataset.exp;EXP.has(id)?EXP.delete(id):EXP.add(id);renderList()},true);
 function renderRows(l){
   const secs=RSEC[F.group];
   $('#list').innerHTML=`<div class="rows">${secs.map(([t,n])=>{const v=l.filter(i=>i.type===t);if(!v.length)return'';
