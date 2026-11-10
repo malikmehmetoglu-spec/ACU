@@ -381,7 +381,7 @@ const WHO={'المدير الإعلامي':'#FF6B4A','المصور والمون�
 const REVIEW={reel:2,promo:3};
 let ROLE='manager',ME='';
 function canStage(it,k){const rv=REVIEW[it.group];if(ROLE==='supervisor')return k===rv;if(k===rv)return false;return true}
-function canField(f){if(ROLE==='supervisor')return false;if(ROLE==='crew')return['link','notes'].includes(f);return true}
+function canField(f){if(ROLE==='supervisor')return['date','time'].includes(f);if(ROLE==='crew')return['link','notes'].includes(f);return true}
 const ROLEN={supervisor:'المشرف العام',manager:'المدير الإعلامي',crew:'المصور والمونتير'};
 let ITEMS=[],S={items:{},log:[]},LOCAL=false;
 let F={group:'shoot',city:'all',status:'all',type:'all',q:'',view:'grid'};

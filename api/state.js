@@ -57,7 +57,7 @@ function check(role, group, old, patch) {
     for (let i = 0; i < Math.max(a.length, b.length); i++) if (!!a[i] !== !!b[i]) changed.push(i);
   }
   if (role === 'supervisor') {
-    if (keys.some(k => !['stages', 'reviewNote'].includes(k))) return 'FORBIDDEN';
+    if (keys.some(k => !['stages', 'reviewNote', 'date', 'time'].includes(k))) return 'FORBIDDEN';
     if (changed.some(i => i !== rv)) return 'FORBIDDEN';
     return null;
   }
