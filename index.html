@@ -591,7 +591,7 @@ function rowHTML(it,i){
     </div>
     <div class="rstages">${stages(it).map((n,k)=>`<button class="stage ${d[k]?'on':''} ${canStage(it,k)?'':'lock'} ${REVIEW[it.group]===k?'rv':''}" data-stage="${it.id}|${k}">${n}</button>`).join('')}</div>
     <div class="ract"><button class="rsc ${EXP.has(it.id)?'on':''}" data-exp="${it.id}">${EXP.has(it.id)?'إخفاء':'السيناريو'}</button>${link}<button class="rmore" data-open="${it.id}" title="التفاصيل والمحتوى"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M15 6l-6 6 6 6"/></svg></button></div>
-    ${EXP.has(it.id)?`<div class="rexp"><p><b>الفكرة:</b> ${esc(s.content??it.desc??'')}</p>${it.scenes?`<table class="scn"><tr><td>الثانية</td><td><b>الصورة</b></td><td><b>الصوت</b></td><td><b>على الشاشة</b></td></tr>${it.scenes.map(r=>`<tr>${r.map(c=>`<td>${esc(c)}</td>`).join('')}</tr>`).join('')}</table>`:''}${it.need?`<p class="rneed"><b>ما يلزم بالتصوير:</b> ${esc(it.need)}</p>`:''}${it.spec?`<p class="mut" style="margin:0;font-size:12px">${esc(it.spec)}</p>`:''}</div>`:''}
+    ${EXP.has(it.id)?`<div class="rexp">${it.topic?`<p><b>موضوع الجلسة:</b> ${esc(it.topic)}</p>`:''}<p><b>الفكرة:</b> ${esc(s.content??it.desc??'')}</p>${it.scenes?`<table class="scn"><tr><td>الثانية</td><td><b>الصورة</b></td><td><b>الصوت</b></td><td><b>على الشاشة</b></td></tr>${it.scenes.map(r=>`<tr>${r.map(c=>`<td>${esc(c)}</td>`).join('')}</tr>`).join('')}</table>`:''}${it.need?`<p class="rneed"><b>ما يلزم بالتصوير:</b> ${esc(it.need)}</p>`:''}${it.spec?`<p class="mut" style="margin:0;font-size:12px">${esc(it.spec)}</p>`:''}</div>`:''}
   </div>`;
 }
 const EXP=new Set();
