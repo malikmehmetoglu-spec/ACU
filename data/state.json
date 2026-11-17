@@ -52,7 +52,7 @@
   "ACU-00119-SYR-ERC-HMS-TR-01": {
    "date": "2026-11-13",
    "time": "13:00",
-   "updatedAt": 1794897611410,
+   "updatedAt": 1794897612871,
    "by": "المدير الإعلامي",
    "reviewNotes": [
     {
@@ -62,7 +62,10 @@
     }
    ],
    "name": "بناء قدرات لجان الاحياء في فهم وتحليل النزاع",
-   "link": "https://drive.google.com/open?id=16Hyke2O3bVQzlH-H0Cpzj8Gf-MT7kim3&usp=drive_fs"
+   "link": "https://drive.google.com/open?id=16Hyke2O3bVQzlH-H0Cpzj8Gf-MT7kim3&usp=drive_fs",
+   "stages": [
+    true
+   ]
   },
   "ACU-00119-SYR-ERC-HMS-DS-01": {
    "date": "2026-11-14",
@@ -223,6 +226,12 @@
   }
  },
  "log": [
+  {
+   "id": "ACU-00119-SYR-ERC-HMS-TR-01",
+   "label": "✓ تنسيق: بناء قدرات لجان الاحياء في فهم وتحليل النزاع",
+   "by": "المدير الإعلامي",
+   "at": 1794897612871
+  },
   {
    "id": "ACU-00119-SYR-ERC-HMS-TR-01",
    "label": "رابط: بناء قدرات لجان الاحياء في فهم وتحليل النزاع",
@@ -576,12 +585,6 @@
    "label": "✓ سيناريو: كل واحد من حارة",
    "by": "المدير الإعلامي",
    "at": 1794298728358
-  },
-  {
-   "id": "ACU-00119-SYR-ERC-XXX-RL-01",
-   "label": "✓ سيناريو: شو بيلزمنا لنرجع نثق؟",
-   "by": "المدير الإعلامي",
-   "at": 1794298724185
   }
  ]
 }
