@@ -66,10 +66,13 @@
   "ACU-00119-SYR-ERC-HMS-DS-01": {
    "date": "2026-11-14",
    "time": "12:00",
-   "updatedAt": 1794810465690,
+   "updatedAt": 1794897471710,
    "by": "المدير الإعلامي",
    "name": "فهم وتحليل النزاع",
-   "link": "https://drive.google.com/open?id=1W1QZ50Xr1qryT04lBMbnMkB9rF62pEgP&usp=drive_fs"
+   "link": "https://drive.google.com/open?id=1W1QZ50Xr1qryT04lBMbnMkB9rF62pEgP&usp=drive_fs",
+   "stages": [
+    true
+   ]
   },
   "ACU-00119-SYR-ERC-WP-01": {
    "stages": [
@@ -216,6 +219,12 @@
   }
  },
  "log": [
+  {
+   "id": "ACU-00119-SYR-ERC-HMS-DS-01",
+   "label": "✓ تنسيق: فهم وتحليل النزاع",
+   "by": "المدير الإعلامي",
+   "at": 1794897471710
+  },
   {
    "id": "ACU-00119-SYR-ERC-HAM-TR-01",
    "label": "↺ تنسيق: التدريب 3",
@@ -569,12 +578,6 @@
    "label": "✓ منجز: اجتماع انطلاق مع ACU: الرسائل، الجمهور، الهوية البصرية، الشع",
    "by": "المدير الإعلامي",
    "at": 1794228443242
-  },
-  {
-   "id": "ACU-00119-SYR-ERC-HMS-DS-01",
-   "label": "موعد 2026-11-14: الجلسة الحوارية 9",
-   "by": "المدير الإعلامي",
-   "at": 1794228102687
   }
  ]
 }
