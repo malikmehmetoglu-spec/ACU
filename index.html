@@ -84,6 +84,21 @@ button{cursor:pointer}
 .seg{display:flex;background:#fff;border:1.5px solid var(--line);border-radius:14px;padding:3px}
 .seg button{border:0;background:transparent;padding:7px 12px;border-radius:10px;font-weight:700;font-size:13px;color:var(--ink2)}
 .seg button.on{background:var(--sun);color:var(--ink)}
+/* mobile: filters stay compact and never cover the content */
+@media (max-width:700px){
+  .tools{position:static;background:var(--paper);padding:8px 0}
+  .tools .toolrow{flex-wrap:nowrap}
+  .tools .toolrow:first-child{flex-wrap:wrap}
+  .search{min-width:0;flex-basis:100%}
+  .search input{padding:10px 0}
+  .search kbd{display:none}
+  .seg{width:100%}.seg button{flex:1;padding:7px 6px}
+  .tools .toolrow+.toolrow{margin-top:8px!important;overflow-x:auto;scrollbar-width:none;-webkit-overflow-scrolling:touch;padding-bottom:2px}
+  .tools .toolrow+.toolrow::-webkit-scrollbar{display:none}
+  .tools .toolrow+.toolrow .spacer{display:none}
+  .chips{flex-wrap:nowrap}
+  .chip{white-space:nowrap;flex:none;padding:6px 11px;font-size:13px}
+}
 
 /* ---------- cards ---------- */
 .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:16px;margin-top:8px}
