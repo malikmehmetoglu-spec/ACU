@@ -483,7 +483,7 @@ function host(u){try{return new URL(u).hostname.replace('www.','')}catch(e){retu
 function cardHTML(it,i){
   const s=st(it.id),d=s.stages||[],stt=status(it),t=`var(--${it.type})`;
   const ttl=title(it),ph=!s.name&&!it.named;
-  const link=s.link?`<a class="linkbtn has" href="${esc(s.link)}" target="_blank" rel="noopener" onclick="event.stopPropagation()">${ICON_LINK}<span>${esc(host(s.link))}</span></a><button class="editlink" data-link="${it.id}" title="تعديل الرابط">${ICON_EDIT}</button>`
+  const link=s.link?`<a class="linkbtn has" href="${esc(s.link)}" target="_blank" rel="noopener" onclick="event.stopPropagation()">${ICON_LINK}<span>الرابط فعال</span></a><button class="editlink" data-link="${it.id}" title="تعديل الرابط">${ICON_EDIT}</button>`
     :`<button class="linkbtn" data-link="${it.id}">${ICON_LINK}<span>أضف رابط</span></button>`;
   const av=s.who?`<span class="av" style="background:${WHO[s.who]||'#9096b3'}" title="${esc(s.who)}">${esc(s.who.split(' ').pop()[0])}</span>`:`<span class="av" style="background:var(--paper2);color:var(--ink3)">?</span>`;
   return `<article class="card ${it.group} ${stt==='done'?'done':''}" style="--t:${t};--i:${Math.min(i,40)}" data-id="${it.id}">
@@ -599,7 +599,7 @@ const RSEC={reel:[['DS_TR','ريلز الجلسات الحوارية والتد�
 function rowHTML(it,i){
   const s=st(it.id),d=s.stages||[],t=`var(--${it.type})`,num=it.id.slice(-2);
   const ed=canField('name');
-  const link=s.link?`<a class="linkbtn has" href="${esc(s.link)}" target="_blank" rel="noopener">${ICON_LINK}<span>${esc(host(s.link))}</span></a><button class="editlink" data-link="${it.id}">${ICON_EDIT}</button>`:`<button class="linkbtn" data-link="${it.id}">${ICON_LINK}<span>أضف رابط</span></button>`;
+  const link=s.link?`<a class="linkbtn has" href="${esc(s.link)}" target="_blank" rel="noopener">${ICON_LINK}<span>الرابط فعال</span></a><button class="editlink" data-link="${it.id}">${ICON_EDIT}</button>`:`<button class="linkbtn" data-link="${it.id}">${ICON_LINK}<span>أضف رابط</span></button>`;
   return `<div class="rrow ${status(it)==='done'?'done':''}" style="--t:${t};--i:${Math.min(i,30)}">
     <div class="rnum">${it.group==='reel'?'R':'P'}${num}</div>
     <div class="rmain">
