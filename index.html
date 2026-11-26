@@ -603,7 +603,7 @@ function rowHTML(it,i){
   return `<div class="rrow ${status(it)==='done'?'done':''}" style="--t:${t};--i:${Math.min(i,30)}">
     <div class="rnum">${it.group==='reel'?'R':'P'}${num}</div>
     <div class="rmain">
-      <div class="rtitle"><input class="tin" data-tin="${it.id}" value="${esc(s.name||'')}" placeholder="${esc(it.ptitle||it.title)}" ${ed?'':'disabled'}>${!s.name?'<span class="prop">مقترح</span>':''}</div>
+      <div class="rtitle"><input class="tin" data-tin="${it.id}" value="${esc(s.name||'')}" placeholder="${esc(it.ptitle||it.title||'أضف عنوان...')}" ${ed?'':'disabled'}>${!s.name&&(it.ptitle||it.title)?'<span class="prop">مقترح</span>':''}</div>
       <div class="rmeta">${cityOf(it)?`<span class="city">${esc(cityOf(it))}</span>`:''}${s.date?`<span class="city">${esc(s.date)}</span>`:''}</div>
     </div>
     <div class="rstages">${stages(it).map((n,k)=>`<button class="stage ${d[k]?'on':''} ${canStage(it,k)?'':'lock'} ${REVIEW[it.group]===k?'rv':''}" data-stage="${it.id}|${k}">${n}</button>`).join('')}</div>

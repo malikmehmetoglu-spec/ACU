@@ -786,9 +786,8 @@
         "group":  "reel",
         "type":  "DS",
         "city":  "",
-        "title":  "قبل ما يحكي، بيسمع",
+        "title":  "",
         "named":  false,
-        "ptitle":  "قبل ما يحكي، بيسمع",
         "spec":  "60 ثانية | عمودي 9:16"
     },
     {
@@ -905,9 +904,8 @@
         "group":  "reel",
         "type":  "DS",
         "city":  "",
-        "title":  "صوتنا جزء من القرار",
+        "title":  "",
         "named":  false,
-        "ptitle":  "صوتنا جزء من القرار",
         "spec":  "64 ثانية تقريباً مع الأوترو | عمودي 9:16"
     },
     {
@@ -978,9 +976,8 @@
         "group":  "reel",
         "type":  "DS",
         "city":  "",
-        "title":  "صوتها مسموع",
+        "title":  "",
         "named":  false,
-        "ptitle":  "صوتها مسموع",
         "spec":  "60 ثانية | عمودي 9:16"
     },
     {
@@ -1046,9 +1043,8 @@
         "group":  "reel",
         "type":  "TR",
         "city":  "",
-        "title":  "لو كنت مكانه",
+        "title":  "",
         "named":  false,
-        "ptitle":  "لو كنت مكانه",
         "spec":  "60 ثانية | عمودي 9:16"
     },
     {
@@ -1056,9 +1052,8 @@
         "group":  "reel",
         "type":  "TR",
         "city":  "",
-        "title":  "شو بقي معك؟",
+        "title":  "",
         "named":  false,
-        "ptitle":  "شو بقي معك؟",
         "spec":  "45 ثانية | عمودي 9:16"
     },
     {
@@ -1066,9 +1061,8 @@
         "group":  "reel",
         "type":  "DS",
         "city":  "",
-        "title":  "من النقاش إلى الفعل",
+        "title":  "",
         "named":  false,
-        "ptitle":  "من النقاش إلى الفعل",
         "spec":  "60 ثانية | عمودي 9:16"
     },
     {
@@ -1076,9 +1070,8 @@
         "group":  "reel",
         "type":  "CI",
         "city":  "",
-        "title":  "بدأت بكلمة",
+        "title":  "",
         "named":  false,
-        "ptitle":  "بدأت بكلمة",
         "spec":  "75 ثانية | عمودي 9:16"
     },
     {
@@ -1086,9 +1079,8 @@
         "group":  "reel",
         "type":  "CI",
         "city":  "",
-        "title":  "من الصبح للمسا",
+        "title":  "",
         "named":  false,
-        "ptitle":  "من الصبح للمسا",
         "spec":  "60 ثانية | عمودي 9:16"
     },
     {
@@ -1096,9 +1088,8 @@
         "group":  "reel",
         "type":  "CI",
         "city":  "",
-        "title":  "نفس الزاوية",
+        "title":  "",
         "named":  false,
-        "ptitle":  "نفس الزاوية",
         "spec":  "30 ثانية | عمودي 9:16"
     },
     {
@@ -1106,9 +1097,8 @@
         "group":  "reel",
         "type":  "CI",
         "city":  "",
-        "title":  "بكلمة وحدة",
+        "title":  "",
         "named":  false,
-        "ptitle":  "بكلمة وحدة",
         "spec":  "30 ثانية | عمودي 9:16"
     },
     {
@@ -1116,9 +1106,8 @@
         "group":  "reel",
         "type":  "CI",
         "city":  "",
-        "title":  "إيدين كتير",
+        "title":  "",
         "named":  false,
-        "ptitle":  "إيدين كتير",
         "spec":  "45 ثانية | عمودي 9:16"
     },
     {
@@ -1126,9 +1115,8 @@
         "group":  "reel",
         "type":  "CI",
         "city":  "",
-        "title":  "تلات أسئلة",
+        "title":  "",
         "named":  false,
-        "ptitle":  "تلات أسئلة",
         "spec":  "45 ثانية | عمودي 9:16"
     },
     {
@@ -1136,9 +1124,8 @@
         "group":  "reel",
         "type":  "CI",
         "city":  "",
-        "title":  "بالأرقام",
+        "title":  "",
         "named":  false,
-        "ptitle":  "بالأرقام",
         "spec":  "30 ثانية | عمودي 9:16"
     },
     {
@@ -1146,9 +1133,8 @@
         "group":  "reel",
         "type":  "CI",
         "city":  "",
-        "title":  "شكراً يا جار",
+        "title":  "",
         "named":  false,
-        "ptitle":  "شكراً يا جار",
         "spec":  "45 ثانية | عمودي 9:16"
     },
     {
@@ -1156,9 +1142,8 @@
         "group":  "reel",
         "type":  "CI",
         "city":  "",
-        "title":  "بعيون الصغار",
+        "title":  "",
         "named":  false,
-        "ptitle":  "بعيون الصغار",
         "spec":  "45 ثانية | عمودي 9:16"
     },
     {
@@ -1166,9 +1151,8 @@
         "group":  "reel",
         "type":  "CI",
         "city":  "",
-        "title":  "شو الجاية؟",
+        "title":  "",
         "named":  false,
-        "ptitle":  "شو الجاية؟",
         "spec":  "45 ثانية | عمودي 9:16"
     },
     {
@@ -1176,9 +1160,8 @@
         "group":  "reel",
         "type":  "SP",
         "city":  "",
-        "title":  "نفس الطريق",
+        "title":  "",
         "named":  false,
-        "ptitle":  "نفس الطريق",
         "spec":  "45 ثانية | عمودي 9:16"
     },
     {
@@ -1186,9 +1169,8 @@
         "group":  "reel",
         "type":  "SP",
         "city":  "",
-        "title":  "أول مرة",
+        "title":  "",
         "named":  false,
-        "ptitle":  "أول مرة",
         "spec":  "30 ثانية | عمودي 9:16"
     },
     {
@@ -1196,9 +1178,8 @@
         "group":  "reel",
         "type":  "SP",
         "city":  "",
-        "title":  "سمعت هالصوت؟",
+        "title":  "",
         "named":  false,
-        "ptitle":  "سمعت هالصوت؟",
         "spec":  "60 ثانية | عمودي 9:16"
     },
     {
@@ -1206,9 +1187,8 @@
         "group":  "reel",
         "type":  "SP",
         "city":  "",
-        "title":  "مين قرر؟",
+        "title":  "",
         "named":  false,
-        "ptitle":  "مين قرر؟",
         "spec":  "60 ثانية | عمودي 9:16"
     },
     {
@@ -1216,9 +1196,8 @@
         "group":  "reel",
         "type":  "SP",
         "city":  "",
-        "title":  "من فوق",
+        "title":  "",
         "named":  false,
-        "ptitle":  "من فوق",
         "spec":  "30 ثانية | عمودي 9:16"
     },
     {
@@ -1226,9 +1205,8 @@
         "group":  "reel",
         "type":  "SP",
         "city":  "",
-        "title":  "يوم التسليم",
+        "title":  "",
         "named":  false,
-        "ptitle":  "يوم التسليم",
         "spec":  "45 ثانية | عمودي 9:16"
     },
     {
@@ -1236,9 +1214,8 @@
         "group":  "reel",
         "type":  "SP",
         "city":  "",
-        "title":  "ابن الحارة",
+        "title":  "",
         "named":  false,
-        "ptitle":  "ابن الحارة",
         "spec":  "60 ثانية | عمودي 9:16"
     },
     {
@@ -1246,9 +1223,8 @@
         "group":  "reel",
         "type":  "SP",
         "city":  "",
-        "title":  "تلات أجيال",
+        "title":  "",
         "named":  false,
-        "ptitle":  "تلات أجيال",
         "spec":  "45 ثانية | عمودي 9:16"
     },
     {
@@ -1256,9 +1232,8 @@
         "group":  "reel",
         "type":  "SP",
         "city":  "",
-        "title":  "كان وصار",
+        "title":  "",
         "named":  false,
-        "ptitle":  "كان وصار",
         "spec":  "30 ثانية | عمودي 9:16"
     },
     {
@@ -1266,9 +1241,8 @@
         "group":  "reel",
         "type":  "SP",
         "city":  "",
-        "title":  "كلمة للي اشتغلوا",
+        "title":  "",
         "named":  false,
-        "ptitle":  "كلمة للي اشتغلوا",
         "spec":  "45 ثانية | عمودي 9:16"
     },
     {
