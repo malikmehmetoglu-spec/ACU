@@ -137,9 +137,10 @@
     null,
     true
    ],
-   "updatedAt": 1795680337811,
+   "updatedAt": 1795680493214,
    "by": "المدير الإعلامي",
-   "link": "https://drive.google.com/file/d/1t-BkoGlbZ5wSifEZISgpK54UQSZmv0Jk/view"
+   "link": "https://drive.google.com/file/d/1t-BkoGlbZ5wSifEZISgpK54UQSZmv0Jk/view",
+   "approved": true
   },
   "ACU-00119-SYR-ERC-XXX-RL-04": {
    "stages": [
@@ -244,6 +245,12 @@
   }
  },
  "log": [
+  {
+   "id": "ACU-00119-SYR-ERC-XXX-RL-03",
+   "label": "اعتماد: السؤال حقّ",
+   "by": "المدير الإعلامي",
+   "at": 1795680493214
+  },
   {
    "id": "ACU-00119-SYR-ERC-XXX-RL-02",
    "label": "اعتماد: التنوع واقع… فكيف نديره؟",
@@ -597,12 +604,6 @@
    "label": "رابط: الجلسة الحوارية 5",
    "by": "المدير الإعلامي",
    "at": 1794466189201
-  },
-  {
-   "id": "ACU-00119-SYR-ERC-HAM-TR-01",
-   "label": "ملاحظة مراجعة: التدريب 3",
-   "by": "المشرف العام",
-   "at": 1794422413388
   }
  ]
 }
