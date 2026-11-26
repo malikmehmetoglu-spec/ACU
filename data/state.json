@@ -255,12 +255,19 @@
   },
   "ACU-00119-SYR-ERC-ALP-TR-02": {
    "name": "المسائلة والمشاركة المجتمعية",
-   "updatedAt": 1795682188329,
+   "updatedAt": 1795682284453,
    "by": "المدير الإعلامي",
-   "link": "https://drive.google.com/open?id=1Kr_hMK_UPJqCYVKqQyjKzO65qgIN-r8I&usp=drive_fs"
+   "link": "https://drive.google.com/open?id=1Kr_hMK_UPJqCYVKqQyjKzO65qgIN-r8I&usp=drive_fs",
+   "date": "2026-11-21"
   }
  },
  "log": [
+  {
+   "id": "ACU-00119-SYR-ERC-ALP-TR-02",
+   "label": "تاريخ: المسائلة والمشاركة المجتمعية",
+   "by": "المدير الإعلامي",
+   "at": 1795682284453
+  },
   {
    "id": "ACU-00119-SYR-ERC-ALP-TR-02",
    "label": "رابط: المسائلة والمشاركة المجتمعية",
@@ -614,12 +621,6 @@
    "label": "✓ تنسيق: فهم وتحليل النزاع",
    "by": "المدير الإعلامي",
    "at": 1794897471710
-  },
-  {
-   "id": "ACU-00119-SYR-ERC-HAM-TR-01",
-   "label": "↺ تنسيق: التدريب 3",
-   "by": "المدير الإعلامي",
-   "at": 1794897459579
   }
  ]
 }
