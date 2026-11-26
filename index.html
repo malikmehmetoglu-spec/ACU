@@ -286,7 +286,9 @@ button{cursor:pointer}
 .rsec{margin-bottom:10px}
 .rrow{display:grid;grid-template-columns:52px minmax(0,1.3fr) minmax(0,1fr) auto;gap:14px;align-items:center;background:#fff;border:1px solid var(--line);border-inline-start:5px solid var(--t);border-radius:18px;padding:12px 14px;margin-bottom:8px;animation:rise .4s both;animation-delay:calc(var(--i)*15ms);transition:box-shadow .2s}
 .rrow:hover{box-shadow:var(--shadow)}
-.rrow.done{background:linear-gradient(90deg,#fff,#f1fbf3)}
+.rrow.done{background:linear-gradient(90deg,#fff,#f1fbf3);position:relative;padding-left:58px}
+.rrow.done:before{content:"";position:absolute;top:50%;left:14px;transform:translateY(-50%);width:34px;height:34px;border-radius:50%;background:var(--leaf);
+  -webkit-mask:url("data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'><path d='M20 6L9 17l-5-5' stroke='black' stroke-width='3' fill='none' stroke-linecap='round' stroke-linejoin='round'/></svg>") center/60% no-repeat,linear-gradient(#000,#000);-webkit-mask-composite:xor;mask-composite:exclude;opacity:.9}
 .rnum{width:46px;height:46px;border-radius:14px;background:color-mix(in srgb,var(--t) 14%,#fff);color:color-mix(in srgb,var(--t) 70%,#000);display:grid;place-items:center;font-weight:900;direction:ltr}
 .rtitle{display:flex;align-items:center;gap:8px}
 .tin{flex:1;min-width:0;border:1.5px solid transparent;background:transparent;border-radius:10px;padding:6px 8px;font-size:16px;font-weight:800;outline:0;transition:all .2s}
@@ -599,7 +601,7 @@ function rowHTML(it,i){
   const ed=canField('name');
   const link=s.link?`<a class="linkbtn has" href="${esc(s.link)}" target="_blank" rel="noopener">${ICON_LINK}<span>الرابط فعال</span></a><button class="editlink" data-link="${it.id}">${ICON_EDIT}</button>`:`<button class="linkbtn" data-link="${it.id}">${ICON_LINK}<span>أضف رابط</span></button>`;
   return `<div class="rrow ${status(it)==='done'?'done':''}" style="--t:${t};--i:${Math.min(i,30)}">
-    <div class="rnum">${it.group==='reel'?'R':'P'}${num}${status(it)==='done'?' ✓':''}</div>
+    <div class="rnum">${it.group==='reel'?'R':'P'}${num}</div>
     <div class="rmain">
       <div class="rtitle"><input class="tin" data-tin="${it.id}" value="${esc(s.name||'')}" placeholder="${esc(it.ptitle||it.title)}" ${ed?'':'disabled'}>${!s.name?'<span class="prop">مقترح</span>':''}</div>
       <div class="rmeta">${cityOf(it)?`<span class="city">${esc(cityOf(it))}</span>`:''}${s.date?`<span class="city">${esc(s.date)}</span>`:''}</div>
