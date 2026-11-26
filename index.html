@@ -393,7 +393,7 @@ const TYPES={DS:'جلسة حوارية',TR:'تدريب لجان',CI:'مبادر�
 const CITIES=['حلب','حماة','حمص'];
 const CODE={'حلب':'ALP','حماة':'HAM','حمص':'HMS'};
 const WHO={'المدير الإعلامي':'#FF6B4A','المصور والمونتير':'#10A88F'};
-const REVIEW={reel:2,promo:3};
+const REVIEW={};
 let ROLE='manager',ME='';
 function canStage(it,k){const rv=REVIEW[it.group];if(ROLE==='supervisor')return k===rv;if(k===rv)return false;return true}
 function canField(f){if(ROLE==='supervisor')return['date','time'].includes(f);if(ROLE==='crew')return['link','notes'].includes(f);return true}
@@ -513,9 +513,7 @@ function renderLog(){
   $('#logp').innerHTML=(S.log||[]).slice(0,40).map(x=>`<div>${esc(x.label)}<small>${esc(x.by||'')} | ${new Date(x.at).toLocaleString('ar-SY-u-nu-latn',{dateStyle:'medium',timeStyle:'short'})}</small></div>`).join('')||'<div>لا توجد تحديثات بعد</div>';
 }
 function renderQueue(){
-  const q=ITEMS.filter(it=>{const rv=REVIEW[it.group];if(rv===undefined)return false;const d=st(it.id).stages||[];for(let k=0;k<rv;k++)if(!d[k])return false;return!d[rv]});
-  if(!q.length){$('#queue').innerHTML='';return}
-  $('#queue').innerHTML=`<div class="queue"><div class="qh"><span class="qn">${q.length}</span><div><b>${ROLE==='supervisor'?'بانتظار مراجعتك':'بانتظار مراجعة المشرف العام'}</b><small>مخرجات انتهى مونتاجها</small></div></div><div class="qitems">${q.map(it=>`<button data-q="${it.id}" style="--t:var(--${it.type})"><i></i>${esc(title(it).slice(0,48))}<span class="code">${esc(codeOf(it).replace('ACU-00119-SYR-ERC-',''))}</span></button>`).join('')}</div></div>`;
+  $('#queue').innerHTML='';
 }
 function render(){renderHero();renderChips();renderQueue();renderList();renderLog();renderCalBadge();if(OPEN)renderDrawer(OPEN);if(CALON)renderCal()}
 function renderSoft(){renderHero();renderChips();renderQueue();renderLog();renderCalBadge();if(CALON)renderCal()}
@@ -581,7 +579,6 @@ function renderDrawer(id){
       <div class="field"><label>التاريخ</label><input id="f_date" data-f="date" type="date" class="ltr" value="${esc(s.date||'')}"></div></div><div class="two"><div class="field"><label>الوقت</label><input id="f_time" data-f="date" type="time" class="ltr" value="${esc(s.time||'')}"></div><div class="field"><label>&nbsp;</label>${s.date?`<button class="btn ghost" onclick="openCal('${s.date}')" style="height:44px">عرض في التقويم</button>`:''}</div></div>
       <div class="field" style="margin:0"><label>ملاحظات</label><textarea id="f_notes" data-f="notes" placeholder="أي تفاصيل، أسماء، أرقام تواصل...">${esc(s.notes||'')}</textarea></div>
     </div>
-    <div class="sec rvsec"><h4>ملاحظات المراجعة</h4>${(s.reviewNotes||[]).length?`<div class="rvlist">${s.reviewNotes.map((n,k)=>`<div class="rvn"><b>جولة ${k+1}</b><p>${esc(n.text)}</p><small>${esc(n.by)} | ${new Date(n.at).toLocaleString('ar-SY-u-nu-latn',{dateStyle:'medium',timeStyle:'short'})}</small></div>`).join('')}</div>`:'<div style="color:var(--ink3);font-size:13px">لا توجد ملاحظات من المشرف العام</div>'}${ROLE==='supervisor'?`<div class="field" style="margin:10px 0 0"><textarea id="rn_text" placeholder="اكتب ملاحظة المراجعة..."></textarea></div><button class="btn dark" id="rn_send" style="margin-top:8px">إرسال الملاحظة</button>`:''}</div>
     ${it.desc&&it.group!=='reel'&&it.group!=='promo'?`<div class="sec"><h4>الفكرة</h4><div style="line-height:1.9;font-size:14.5px">${esc(it.desc)}</div>${it.cta?`<div style="margin-top:8px;font-weight:800;color:var(--rose)">نص الختام: ${esc(it.cta)}</div>`:''}</div>`:''}
     ${it.need?`<div class="sec"><h4>ما يلزم بالتصوير</h4><div style="line-height:1.9">${esc(it.need)}</div></div>`:''}${it.people?`<div class="sec"><h4>الشخصيات <span class="prop">مقترحة</span></h4><div style="line-height:1.9">${it.people.map(esc).join('، ')}</div></div>`:''}
     ${it.scenes?`<div class="sec"><h4>المشاهد <span class="prop">مقترحة</span></h4><table class="scn"><tr><td>الثانية</td><td><b>الصورة</b></td><td><b>الصوت</b></td><td><b>على الشاشة</b></td></tr>${it.scenes.map(r=>`<tr>${r.map(c=>`<td>${esc(c)}</td>`).join('')}</tr>`).join('')}</table></div>`:''}
@@ -591,7 +588,6 @@ function renderDrawer(id){
   </div>`;
   const bind=(f,key,lbl)=>{const el=dr.querySelector('#'+f);if(!el)return;el.addEventListener('change',()=>{let v=el.value.trim();if(key==='link'&&v&&!/^https?:\/\//i.test(v))v='https://'+v;save(id,{[key]:v},`${lbl}: ${title(it).slice(0,60)}`);el.blur()})};
   dr.querySelectorAll('[data-f]').forEach(el=>{if(!canField(el.dataset.f))el.disabled=true});
-  const rn=dr.querySelector('#rn_send');if(rn)rn.onclick=()=>{const t=dr.querySelector('#rn_text');const v=t.value.trim();if(!v)return;t.value='';save(id,{reviewNote:v},`ملاحظة مراجعة: ${title(it).slice(0,60)}`);toast('تم إرسال الملاحظة')};
   const ap=dr.querySelector('#approve');if(ap)ap.onclick=()=>{save(id,{approved:true},`اعتماد: ${title(it).slice(0,60)}`);toast('تم الاعتماد')};
   const ua=dr.querySelector('#unapprove');if(ua)ua.onclick=()=>save(id,{approved:false},`إلغاء اعتماد: ${title(it).slice(0,60)}`);
   bind('f_link','link','رابط');bind('f_name','name','تسمية');bind('f_city','city','مدينة');bind('f_who','who','مسؤول');bind('f_date','date','تاريخ');bind('f_time','time','وقت');bind('f_content','content','محتوى');bind('f_notes','notes','ملاحظة');
