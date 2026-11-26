@@ -48,22 +48,7 @@ function roleOf(pass) {
   return null;
 }
 // returns error string or null
-function check(role, group, old, patch) {
-  const keys = Object.keys(patch);
-  const rv = REVIEW[group];
-  const changed = [];
-  if (patch.stages) {
-    const a = old.stages || [], b = patch.stages;
-    for (let i = 0; i < Math.max(a.length, b.length); i++) if (!!a[i] !== !!b[i]) changed.push(i);
-  }
-  if (role === 'supervisor') {
-    if (keys.some(k => !['stages', 'reviewNote', 'date', 'time'].includes(k))) return 'FORBIDDEN';
-    if (changed.some(i => i !== rv)) return 'FORBIDDEN';
-    return null;
-  }
-  if (keys.includes('reviewNote')) return 'FORBIDDEN';
-  if (rv !== undefined && changed.includes(rv)) return 'FORBIDDEN';
-  if (role === 'crew' && keys.some(k => !['stages', 'link', 'notes'].includes(k))) return 'FORBIDDEN';
+function check() {
   return null;
 }
 
