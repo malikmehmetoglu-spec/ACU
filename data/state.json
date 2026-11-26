@@ -52,7 +52,7 @@
   "ACU-00119-SYR-ERC-HMS-TR-01": {
    "date": "2026-11-13",
    "time": "13:00",
-   "updatedAt": 1794897621330,
+   "updatedAt": 1795682020115,
    "by": "المدير الإعلامي",
    "reviewNotes": [
     {
@@ -62,7 +62,7 @@
     }
    ],
    "name": "بناء قدرات لجان الاحياء في فهم وتحليل النزاع",
-   "link": "https://drive.google.com/open?id=16Hyke2O3bVQzlH-H0Cpzj8Gf-MT7kim3&usp=drive_fs",
+   "link": "https://drive.google.com/open?id=1k6r-pg0mXouxcZERAq0wbttZAOcL9JHI&usp=drive_fs",
    "stages": [
     true,
     true,
@@ -248,6 +248,12 @@
   }
  },
  "log": [
+  {
+   "id": "ACU-00119-SYR-ERC-HMS-TR-01",
+   "label": "رابط: بناء قدرات لجان الاحياء في فهم وتحليل النزاع",
+   "by": "المدير الإعلامي",
+   "at": 1795682020115
+  },
   {
    "id": "ACU-00119-SYR-ERC-XXX-RL-07",
    "label": "عنوان: تدريب الإطار العام الأدوار والمسؤوليات",
@@ -601,12 +607,6 @@
    "label": "✓ مقابلات: إدارة التنوع والاختلاف في السياق المحلي",
    "by": "المدير الإعلامي",
    "at": 1794897420977
-  },
-  {
-   "id": "ACU-00119-SYR-ERC-HAM-DS-01",
-   "label": "✓ تصوير: إدارة التنوع والاختلاف في السياق المحلي",
-   "by": "المدير الإعلامي",
-   "at": 1794897419448
   }
  ]
 }
