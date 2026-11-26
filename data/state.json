@@ -154,10 +154,10 @@
     null,
     true
    ],
-   "updatedAt": 1795679173292,
+   "updatedAt": 1795680321541,
    "by": "المدير الإعلامي",
    "name": "المسائلة والمشاركة المجتمعية - حلب - تدريب",
-   "link": "https://*Reel R05* https://drive.google.com/open?id=1wO0IXzDPJVMm3nSXPt5oDp32XEbOgcyd&usp=drive_fs"
+   "link": "https://drive.google.com/file/d/1wO0IXzDPJVMm3nSXPt5oDp32XEbOgcyd/view"
   },
   "ACU-00119-SYR-ERC-XXX-RL-06": {
    "stages": [
@@ -243,6 +243,12 @@
   }
  },
  "log": [
+  {
+   "id": "ACU-00119-SYR-ERC-XXX-RL-05",
+   "label": "رابط: المسائلة والمشاركة المجتمعية - حلب - تدريب",
+   "by": "المدير الإعلامي",
+   "at": 1795680321541
+  },
   {
    "id": "ACU-00119-SYR-ERC-XXX-RL-02",
    "label": "رابط: التنوع واقع… فكيف نديره؟",
@@ -596,12 +602,6 @@
    "label": "موعد 2026-11-13: التدريب 4",
    "by": "المشرف العام",
    "at": 1794408095910
-  },
-  {
-   "id": "ACU-00119-SYR-ERC-HMS-TR-01",
-   "label": "ملاحظة مراجعة: التدريب 5",
-   "by": "المشرف العام",
-   "at": 1794407901241
   }
  ]
 }
