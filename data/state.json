@@ -153,10 +153,10 @@
     null,
     true
    ],
-   "updatedAt": 1795679163110,
+   "updatedAt": 1795679173292,
    "by": "المدير الإعلامي",
    "name": "المسائلة والمشاركة المجتمعية - حلب - تدريب",
-   "link": "https://*Reel R07*  https://drive.google.com/open?id=1aI4Tpxs99brtwpuq2hY8Ixqv1ZPwZYiw&usp=drive_fs"
+   "link": "https://*Reel R05* https://drive.google.com/open?id=1wO0IXzDPJVMm3nSXPt5oDp32XEbOgcyd&usp=drive_fs"
   },
   "ACU-00119-SYR-ERC-XXX-RL-06": {
    "stages": [
@@ -242,6 +242,12 @@
   }
  },
  "log": [
+  {
+   "id": "ACU-00119-SYR-ERC-XXX-RL-05",
+   "label": "رابط: المسائلة والمشاركة المجتمعية - حلب - تدريب",
+   "by": "المدير الإعلامي",
+   "at": 1795679173292
+  },
   {
    "id": "ACU-00119-SYR-ERC-XXX-RL-05",
    "label": "✓ تسليم: المسائلة والمشاركة المجتمعية - حلب - تدريب",
@@ -595,12 +601,6 @@
    "label": "ملاحظة مراجعة: دور القيادات في فهم السياق وإدارة النزاع",
    "by": "المشرف العام",
    "at": 1794407116668
-  },
-  {
-   "id": "ACU-00119-SYR-ERC-XXX-RL-07",
-   "label": "✓ سيناريو: الإطار العام الأدوار والمسؤوليات",
-   "by": "المدير الإعلامي",
-   "at": 1794383067794
   }
  ]
 }
