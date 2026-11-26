@@ -122,10 +122,10 @@
    "stages": [
     true,
     true,
-    null,
+    true,
     true
    ],
-   "updatedAt": 1795680367833,
+   "updatedAt": 1795680969372,
    "by": "المدير الإعلامي",
    "link": "http://drive.google.com/open?id=1AdLdWQk-J0mQZVtNC1Ac5aG0vEGyNYYh&usp=drive_fs",
    "approved": true
@@ -245,6 +245,12 @@
   }
  },
  "log": [
+  {
+   "id": "ACU-00119-SYR-ERC-XXX-RL-02",
+   "label": "✓ تسليم: التنوع واقع… فكيف نديره؟",
+   "by": "المدير الإعلامي",
+   "at": 1795680969372
+  },
   {
    "id": "ACU-00119-SYR-ERC-XXX-RL-03",
    "label": "اعتماد: السؤال حقّ",
@@ -598,12 +604,6 @@
    "label": "عنوان: إدارة التنوع والاختلاف في السياق المحلي",
    "by": "المدير الإعلامي",
    "at": 1794466883361
-  },
-  {
-   "id": "ACU-00119-SYR-ERC-HAM-DS-01",
-   "label": "رابط: الجلسة الحوارية 5",
-   "by": "المدير الإعلامي",
-   "at": 1794466189201
   }
  ]
 }
