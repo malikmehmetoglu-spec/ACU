@@ -138,10 +138,11 @@
     true,
     true
    ],
-   "updatedAt": 1795681011438,
+   "updatedAt": 1795681254327,
    "by": "المدير الإعلامي",
    "link": "https://drive.google.com/file/d/1t-BkoGlbZ5wSifEZISgpK54UQSZmv0Jk/view",
-   "approved": true
+   "approved": true,
+   "name": "تدريب المساءلة والمشاركة المجتمعية"
   },
   "ACU-00119-SYR-ERC-XXX-RL-04": {
    "stages": [
@@ -246,6 +247,12 @@
   }
  },
  "log": [
+  {
+   "id": "ACU-00119-SYR-ERC-XXX-RL-03",
+   "label": "عنوان: تدريب المساءلة والمشاركة المجتمعية",
+   "by": "المدير الإعلامي",
+   "at": 1795681254327
+  },
   {
    "id": "ACU-00119-SYR-ERC-XXX-RL-06",
    "label": "↺ سيناريو: ",
@@ -599,12 +606,6 @@
    "label": "رابط: فهم وتحليل النزاع",
    "by": "المدير الإعلامي",
    "at": 1794810465690
-  },
-  {
-   "id": "ACU-00119-SYR-ERC-HAM-TR-01",
-   "label": "✓ أرشفة: التدريب 3",
-   "by": "المدير الإعلامي",
-   "at": 1794644747204
   }
  ]
 }
